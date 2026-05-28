@@ -3,556 +3,896 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Frogies — Kawaii Pastel Collection</title>
+    <title>Frogies — an art frog collection on Bitcoin</title>
     <meta
       name="description"
-      content="Frogies is a cute pastel Bitcoin-block-driven NFT collection concept for nat.fun."
+      content="Frogies is an art-forward Bitcoin frog collection concept for nat.fun, built around deterministic block-data rarity and a mid-century modern visual language."
     />
     <style>
       :root {
-        --bg0: #fff7fb;
-        --bg1: #f3ecff;
-        --bg2: #e9f7ff;
-        --card: rgba(255, 255, 255, 0.8);
-        --card-strong: rgba(255, 255, 255, 0.94);
-        --text: #2d2540;
-        --muted: #6f6785;
-        --line: rgba(95, 78, 138, 0.14);
-        --mint: #8fe6c5;
-        --pink: #ffb6d8;
-        --lavender: #c7b2ff;
-        --sky: #9ddcff;
-        --gold: #f4c77b;
-        --shadow: 0 20px 50px rgba(108, 77, 173, 0.12);
+        --bg: #0f3f40;
+        --bg-2: #143f3f;
+        --panel: rgba(244, 229, 206, 0.94);
+        --panel-strong: rgba(248, 237, 220, 0.98);
+        --ink: #143033;
+        --ink-soft: #4c5d58;
+        --muted: #62706d;
+        --line: rgba(20, 48, 51, 0.12);
+        --olive: #8aa96f;
+        --sage: #a6c18b;
+        --sun: #e6a264;
+        --rose: #dd8f8f;
+        --sand: #efe0c0;
+        --gold: #cb9d48;
+        --shadow: 0 24px 60px rgba(4, 24, 24, 0.3);
       }
-      * { box-sizing: border-box; }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at 20% 20%, rgba(255, 182, 216, 0.35), transparent 24%),
-          radial-gradient(circle at 80% 10%, rgba(157, 220, 255, 0.36), transparent 22%),
-          radial-gradient(circle at 70% 80%, rgba(143, 230, 197, 0.28), transparent 24%),
-          linear-gradient(180deg, var(--bg0), var(--bg1) 42%, var(--bg2));
         min-height: 100vh;
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 12% 14%, rgba(238, 202, 166, 0.18), transparent 18%),
+          radial-gradient(circle at 82% 12%, rgba(181, 206, 153, 0.16), transparent 19%),
+          radial-gradient(circle at 72% 86%, rgba(233, 165, 123, 0.12), transparent 20%),
+          linear-gradient(180deg, #0b3536 0%, var(--bg) 42%, #092b2d 100%);
       }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background:
+          repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 5px),
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 6px);
+        mix-blend-mode: soft-light;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
       .wrap {
-        width: min(1180px, calc(100vw - 32px));
+        width: min(1240px, calc(100vw - 32px));
         margin: 0 auto;
-        padding: 28px 0 64px;
+        padding: 24px 0 56px;
       }
-      header {
+
+      .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 28px;
+        gap: 14px;
+        margin-bottom: 24px;
       }
+
       .brand {
         display: flex;
         align-items: center;
         gap: 14px;
       }
+
       .mark {
-        width: 52px;
-        height: 52px;
+        width: 56px;
+        height: 56px;
         border-radius: 18px;
+        background:
+          linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
+        border: 1px solid rgba(255, 255, 255, 0.18);
         display: grid;
         place-items: center;
-        background: linear-gradient(145deg, rgba(143,230,197,.9), rgba(255,182,216,.86));
-        box-shadow: var(--shadow);
+        box-shadow: 0 16px 34px rgba(4, 24, 24, 0.2);
+        color: #fff8ec;
         font-size: 26px;
       }
-      h1, h2, h3, p { margin: 0; }
-      h1 {
-        font-size: clamp(2.6rem, 5vw, 4.8rem);
-        letter-spacing: -0.06em;
-        line-height: 0.95;
-      }
-      .eyebrow {
+
+      .brand-copy .eyebrow {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 14px;
+        padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(255,255,255,.66);
-        border: 1px solid var(--line);
-        font-size: 0.9rem;
-        color: var(--muted);
-        box-shadow: 0 10px 24px rgba(127, 100, 182, 0.08);
+        background: rgba(244, 229, 206, 0.08);
+        border: 1px solid rgba(244, 229, 206, 0.16);
+        color: rgba(245, 232, 212, 0.85);
+        font-size: 0.88rem;
+        letter-spacing: 0.02em;
       }
+
+      .brand-copy .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--sun);
+        box-shadow: 0 0 0 4px rgba(230, 162, 100, 0.14);
+      }
+
+      .top-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(244, 229, 206, 0.18);
+        background: rgba(244, 229, 206, 0.06);
+        color: rgba(248, 237, 220, 0.92);
+        text-decoration: none;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+        backdrop-filter: blur(8px);
+      }
+
+      .top-link:hover {
+        background: rgba(244, 229, 206, 0.12);
+      }
+
       .hero {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: 1.05fr 0.95fr;
         gap: 20px;
         align-items: stretch;
         margin-bottom: 20px;
       }
+
       .panel {
-        background: var(--card);
-        backdrop-filter: blur(14px);
-        border: 1px solid var(--line);
         border-radius: 30px;
+        background: var(--panel);
         box-shadow: var(--shadow);
-      }
-      .hero-copy {
-        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
         overflow: hidden;
-        position: relative;
       }
-      .hero-copy::after {
+
+      .hero-copy {
+        position: relative;
+        padding: 30px;
+        background:
+          linear-gradient(180deg, rgba(248, 237, 220, 0.98), rgba(239, 224, 192, 0.92));
+      }
+
+      .hero-copy::before {
         content: "";
         position: absolute;
-        inset: auto -80px -120px auto;
-        width: 260px;
-        height: 260px;
+        left: -110px;
+        top: -140px;
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(244,199,123,.22), rgba(244,199,123,0) 70%);
-        pointer-events: none;
+        background: radial-gradient(circle, rgba(230, 162, 100, 0.25), transparent 66%);
       }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(20, 48, 51, 0.06);
+        color: var(--ink-soft);
+        border: 1px solid rgba(20, 48, 51, 0.08);
+        font-size: 0.9rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .kicker::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--olive);
+        box-shadow: 0 0 0 5px rgba(138, 169, 111, 0.14);
+      }
+
+      h1 {
+        max-width: 8ch;
+        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+        font-size: clamp(3.4rem, 6vw, 6rem);
+        line-height: 0.88;
+        letter-spacing: -0.08em;
+        color: #173537;
+      }
+
       .lede {
-        margin-top: 14px;
+        margin-top: 18px;
+        max-width: 63ch;
         font-size: 1.08rem;
-        line-height: 1.7;
-        max-width: 62ch;
-        color: var(--muted);
+        line-height: 1.72;
+        color: var(--ink-soft);
       }
+
       .cta-row {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 18px;
+        margin-top: 20px;
       }
+
       .btn {
         display: inline-flex;
         align-items: center;
         gap: 10px;
         padding: 12px 16px;
         border-radius: 16px;
-        border: 1px solid rgba(95, 78, 138, 0.12);
         text-decoration: none;
-        color: var(--text);
-        background: rgba(255,255,255,.82);
-        font-weight: 650;
+        border: 1px solid rgba(20, 48, 51, 0.14);
+        background: rgba(255, 255, 255, 0.48);
+        color: var(--ink);
+        font-weight: 700;
+        box-shadow: 0 10px 24px rgba(4, 24, 24, 0.08);
       }
+
       .btn.primary {
-        background: linear-gradient(135deg, rgba(143,230,197,0.96), rgba(255,182,216,0.96));
+        background: linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
+        color: #143033;
       }
-      .stats {
+
+      .meta-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
-        margin-top: 22px;
+        margin-top: 24px;
       }
-      .stat {
+
+      .meta {
         padding: 16px;
         border-radius: 22px;
-        background: rgba(255,255,255,.74);
-        border: 1px solid var(--line);
+        border: 1px solid rgba(20, 48, 51, 0.1);
+        background: rgba(255, 255, 255, 0.42);
       }
-      .stat strong {
+
+      .meta strong {
         display: block;
-        font-size: 1.4rem;
+        font-size: 1.24rem;
         margin-bottom: 4px;
       }
-      .frog-panel {
-        position: relative;
-        padding: 22px;
-        overflow: hidden;
-        display: grid;
-        place-items: center;
-        min-height: 360px;
+
+      .mini {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.45;
       }
-      .pond {
+
+      .art-panel {
         position: relative;
-        width: min(100%, 520px);
-        aspect-ratio: 16 / 10;
-        border-radius: 34px;
-        overflow: hidden;
-        border: 1px solid rgba(95, 78, 138, 0.1);
+        min-height: 470px;
         background:
-          radial-gradient(circle at 22% 18%, rgba(243, 178, 140, 0.58), rgba(243, 178, 140, 0) 18%),
-          radial-gradient(circle at 82% 16%, rgba(245, 236, 209, 0.8), rgba(245, 236, 209, 0) 17%),
-          linear-gradient(180deg, #a9cfd0 0%, #97c5c7 44%, #8db8bd 100%);
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+          linear-gradient(180deg, rgba(10, 58, 59, 0.12), rgba(10, 58, 59, 0.22)),
+          radial-gradient(circle at 20% 22%, rgba(231, 175, 143, 0.18), transparent 19%),
+          linear-gradient(180deg, #0f4a4b 0%, #17484a 100%);
       }
-      .pond::before,
-      .pond::after {
+
+      .art-panel::before {
         content: "";
         position: absolute;
-        border-radius: 50%;
+        inset: 16px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 248, 236, 0.08);
         pointer-events: none;
       }
+
+      .pond {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
       .pond::before {
-        left: -18%;
-        top: -20%;
-        width: 58%;
-        height: 72%;
-        background: rgba(247, 239, 224, 0.32);
-        transform: rotate(-12deg);
-      }
-      .pond::after {
-        right: -6%;
-        bottom: -26%;
-        width: 58%;
-        height: 56%;
-        background: rgba(120, 170, 171, 0.24);
-        transform: rotate(14deg);
-      }
-      .sun-disc {
-        position: absolute;
-        left: 62px;
-        top: 52px;
-        width: 116px;
-        height: 116px;
-        border-radius: 50%;
-        background: #f3b28c;
-        opacity: .9;
-      }
-      .arc {
-        position: absolute;
-        border-radius: 999px;
-      }
-      .arc.one {
-        left: 54px;
-        top: 178px;
-        width: 184px;
-        height: 92px;
-        border: 16px solid rgba(245, 236, 209, 0.72);
-        border-color: rgba(245, 236, 209, 0.72) transparent transparent transparent;
-        transform: rotate(-7deg);
-      }
-      .arc.two {
-        right: 68px;
-        top: 82px;
-        width: 150px;
-        height: 76px;
-        border: 14px solid rgba(245, 236, 209, 0.48);
-        border-color: rgba(245, 236, 209, 0.48) transparent transparent transparent;
-        transform: rotate(16deg);
-      }
-      .water-band {
-        position: absolute;
-        left: -8%;
-        right: -8%;
-        bottom: 0;
-        height: 40%;
-        background: linear-gradient(180deg, rgba(120, 170, 171, 0), rgba(120, 170, 171, 0.18) 28%, rgba(106, 154, 156, 0.42));
-      }
-      .water-band::before,
-      .water-band::after {
         content: "";
         position: absolute;
-        border-radius: 999px;
-        background: rgba(245, 236, 209, 0.56);
-        opacity: .55;
-      }
-      .water-band::before {
-        left: 12%;
-        top: 26%;
-        width: 30%;
-        height: 10px;
-      }
-      .water-band::after {
-        right: 10%;
-        top: 44%;
-        width: 24%;
-        height: 8px;
-      }
-      .pad {
-        position: absolute;
-        left: 52%;
-        bottom: 16%;
-        translate: -50% 0;
-        width: 290px;
-        height: 120px;
-        border-radius: 60% 40% 56% 44% / 65% 52% 48% 35%;
-        background: #7eb58e;
-        transform: rotate(-8deg);
-        box-shadow: inset -12px -10px 0 rgba(65, 110, 80, 0.12);
-      }
-      .pad::after {
-        content: "";
-        position: absolute;
-        right: 46px;
-        top: 16px;
-        width: 52px;
-        height: 52px;
+        inset: -8% -10% auto auto;
+        width: 38%;
+        height: 52%;
         border-radius: 50%;
-        background: #8dbb9a;
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-        transform: rotate(10deg);
+        background: radial-gradient(circle, rgba(238, 214, 185, 0.16), transparent 68%);
       }
-      .pad.small-left,
-      .pad.small-right {
-        width: 110px;
-        height: 46px;
-        bottom: 24%;
-        opacity: .9;
-      }
-      .pad.small-left {
-        left: 28%;
-        background: #9bc89f;
-        transform: rotate(10deg);
-      }
-      .pad.small-right {
-        left: auto;
-        right: 18%;
-        background: #8cbba2;
-        transform: rotate(-14deg);
-      }
-      .frog {
+
+      .lotus {
         position: absolute;
-        left: 45%;
-        bottom: 16%;
-        translate: -50% 0;
-        width: 260px;
-        height: 206px;
+        left: 40px;
+        top: 36px;
+        width: 112px;
+        height: 168px;
       }
-      .frog .shadow {
+
+      .lotus .stem {
         position: absolute;
         left: 50%;
-        bottom: 8px;
+        top: 58px;
         translate: -50% 0;
-        width: 170px;
-        height: 24px;
-        border-radius: 50%;
-        background: rgba(84, 116, 110, 0.18);
-        filter: blur(4px);
+        width: 7px;
+        height: 118px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #6ca15f, #4f7c4e);
       }
-      .frog .body {
+
+      .lotus .flower {
         position: absolute;
-        left: 46px;
-        right: 46px;
-        bottom: 20px;
-        height: 92px;
-        border-radius: 34px 34px 30px 30px;
-        background: #7fc89d;
+        left: 50%;
+        top: 0;
+        translate: -50% 0;
+        width: 112px;
+        height: 88px;
       }
-      .frog .body::before {
+
+      .lotus .petal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 26px;
+        height: 56px;
+        border-radius: 999px 999px 14px 14px;
+        background: linear-gradient(180deg, #f6dad7, #eac1c0);
+        transform-origin: center bottom;
+        box-shadow: 0 8px 14px rgba(3, 18, 18, 0.12);
+      }
+
+      .lotus .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(-50deg); }
+      .lotus .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(-28deg); }
+      .lotus .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(-10deg); }
+      .lotus .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(10deg); }
+      .lotus .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(28deg); }
+      .lotus .petal:nth-child(6) { transform: translate(-50%, -100%) rotate(48deg); }
+
+      .lotus .core {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -50% -42%;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f0e2cc;
+        box-shadow: 0 0 0 5px rgba(240, 226, 204, 0.18);
+      }
+
+      .ripples {
+        position: absolute;
+        left: 48px;
+        top: 150px;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        border: 2px solid rgba(206, 239, 244, 0.42);
+        border-color: rgba(206, 239, 244, 0.42) transparent transparent transparent;
+        transform: rotate(-18deg);
+      }
+
+      .ripples::before,
+      .ripples::after {
         content: "";
         position: absolute;
-        left: 30px;
-        right: 30px;
-        top: 16px;
-        bottom: 14px;
+        inset: 12px;
         border-radius: 50%;
-        background: rgba(245, 236, 209, 0.20);
+        border: 2px solid rgba(206, 239, 244, 0.34);
+        border-color: rgba(206, 239, 244, 0.34) transparent transparent transparent;
       }
+
+      .ripples::after {
+        inset: 24px;
+      }
+
+      .ring-left,
+      .ring-right {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid rgba(206, 239, 244, 0.34);
+        border-color: rgba(206, 239, 244, 0.34) transparent transparent transparent;
+      }
+
+      .ring-left {
+        left: 28px;
+        top: 312px;
+        width: 94px;
+        height: 38px;
+        transform: rotate(-10deg);
+      }
+
+      .ring-right {
+        right: 62px;
+        top: 148px;
+        width: 118px;
+        height: 44px;
+        transform: rotate(12deg);
+      }
+
+      .pad {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #8db46f 0%, #83a95e 100%);
+        box-shadow: inset 0 -12px 0 rgba(18, 50, 36, 0.06), 0 18px 24px rgba(6, 24, 24, 0.16);
+      }
+
+      .pad.big {
+        left: 56px;
+        bottom: 84px;
+        width: 448px;
+        height: 232px;
+        transform: rotate(-4deg);
+      }
+
+      .pad.big::after {
+        content: "";
+        position: absolute;
+        right: -8px;
+        top: 28px;
+        width: 126px;
+        height: 68px;
+        background: linear-gradient(180deg, #17484a 0%, #17484a 100%);
+        clip-path: polygon(0 50%, 100% 0, 100% 100%);
+      }
+
+      .pad.small-left,
+      .pad.small-right {
+        width: 172px;
+        height: 88px;
+        bottom: 38px;
+        background: linear-gradient(180deg, #adc98d, #9fbe7c);
+      }
+
+      .pad.small-left {
+        left: 18px;
+        transform: rotate(0deg);
+      }
+
+      .pad.small-left::after,
+      .pad.small-right::after {
+        content: "";
+        position: absolute;
+        right: -4px;
+        top: 40px;
+        width: 70px;
+        height: 32px;
+        background: #17484a;
+        clip-path: polygon(0 50%, 100% 0, 100% 100%);
+      }
+
+      .pad.small-right {
+        right: 18px;
+        transform: rotate(0deg);
+      }
+
+      .frog {
+        position: absolute;
+        left: 184px;
+        bottom: 102px;
+        width: 258px;
+        height: 186px;
+        transform: rotate(1deg);
+      }
+
+      .frog .body {
+        position: absolute;
+        left: 58px;
+        top: 44px;
+        width: 154px;
+        height: 96px;
+        border-radius: 58px 66px 34px 46px;
+        background: linear-gradient(180deg, #98ce58 0%, #85b946 100%);
+        box-shadow: inset -10px -12px 0 rgba(37, 76, 27, 0.06);
+      }
+
       .frog .head {
         position: absolute;
-        left: 34px;
-        right: 34px;
-        top: 0;
-        height: 112px;
-        border-radius: 54px 54px 36px 36px;
-        background: #96dfb7;
+        left: 28px;
+        top: 20px;
+        width: 126px;
+        height: 80px;
+        border-radius: 52px 58px 34px 36px;
+        background: linear-gradient(180deg, #a3d367 0%, #91c452 100%);
+        box-shadow: inset -8px -6px 0 rgba(37, 76, 27, 0.05);
       }
+
       .frog .eye {
         position: absolute;
-        top: -1px;
-        width: 52px;
-        height: 52px;
+        left: 82px;
+        top: 30px;
+        width: 28px;
+        height: 22px;
         border-radius: 50%;
-        background: #88d3af;
+        background: #efe3bc;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
       }
-      .frog .eye.left {
-        left: 20px;
-      }
-      .frog .eye.right {
-        right: 20px;
-      }
+
       .frog .eye::after {
         content: "";
         position: absolute;
-        inset: 14px;
+        left: 11px;
+        top: 6px;
+        width: 9px;
+        height: 8px;
         border-radius: 50%;
-        background: #273238;
-        box-shadow: 0 0 0 4px rgba(245, 236, 209, 0.7);
+        background: #171112;
       }
+
       .frog .mouth {
         position: absolute;
-        left: 50%;
-        top: 80px;
-        translate: -50% 0;
-        width: 36px;
-        height: 16px;
-        border-bottom: 4px solid rgba(39, 50, 56, .68);
-        border-radius: 0 0 20px 20px;
+        left: 44px;
+        top: 68px;
+        width: 20px;
+        height: 8px;
+        border-bottom: 2px solid rgba(20, 48, 51, 0.72);
+        border-radius: 0 0 14px 14px;
       }
-      .frog .arm,
-      .frog .leg {
-        display: none;
-      }
+
       .frog .belly {
         position: absolute;
-        left: 72px;
-        right: 72px;
-        bottom: 30px;
-        height: 34px;
-        border-radius: 999px;
-        background: rgba(245, 236, 209, 0.24);
+        left: 86px;
+        top: 70px;
+        width: 70px;
+        height: 68px;
+        border-radius: 32px 32px 28px 28px;
+        background: linear-gradient(180deg, #f1e6cd 0%, #fff7e8 100%);
+        clip-path: polygon(14% 0, 84% 0, 100% 40%, 84% 100%, 18% 100%, 0 46%);
       }
+
+      .frog .leg {
+        position: absolute;
+        background: linear-gradient(180deg, #90c652, #7cab42);
+      }
+
+      .frog .leg.back {
+        right: 18px;
+        bottom: 20px;
+        width: 70px;
+        height: 56px;
+        border-radius: 50% 34% 44% 50%;
+        transform: rotate(-24deg);
+      }
+
+      .frog .leg.front {
+        left: 8px;
+        bottom: 38px;
+        width: 78px;
+        height: 34px;
+        border-radius: 20px 20px 18px 18px;
+        transform: rotate(8deg);
+      }
+
+      .frog .foot {
+        position: absolute;
+        width: 56px;
+        height: 16px;
+        left: 0;
+        bottom: 10px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #7cab42, #6f9b3f);
+        clip-path: polygon(0 50%, 100% 0, 100% 100%);
+      }
+
+      .frog .tongue {
+        position: absolute;
+        left: 10px;
+        top: 74px;
+        width: 136px;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #c98c9b, #e1a6b2, #edb1b7);
+        transform: rotate(-12deg);
+        transform-origin: left center;
+      }
+
+      .fly {
+        position: absolute;
+        left: 234px;
+        top: 104px;
+        width: 42px;
+        height: 30px;
+      }
+
+      .fly::before,
+      .fly::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 20px;
+        height: 16px;
+        border-radius: 12px 12px 50% 50%;
+        background: rgba(230, 240, 241, 0.72);
+        box-shadow: inset 0 -2px 0 rgba(32, 34, 38, 0.12);
+      }
+
+      .fly::before {
+        left: 0;
+        transform: rotate(-28deg);
+      }
+
+      .fly::after {
+        right: 0;
+        transform: rotate(22deg);
+      }
+
+      .fly .body {
+        position: absolute;
+        left: 16px;
+        top: 10px;
+        width: 14px;
+        height: 12px;
+        border-radius: 50%;
+        background: #1f2023;
+      }
+
+      .fly .eye {
+        position: absolute;
+        left: 12px;
+        top: 10px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #c17b88;
+        box-shadow: 0 0 0 4px rgba(193, 123, 136, 0.12);
+      }
+
+      .leves {
+        position: absolute;
+        right: 22px;
+        bottom: 24px;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: #eeb3b0;
+        clip-path: ellipse(40% 48% at 50% 50%);
+        box-shadow: 0 0 0 4px rgba(238, 179, 176, 0.12);
+      }
+
+      .leves::before,
+      .leves::after {
+        content: "";
+        position: absolute;
+        inset: 12px 14px 16px;
+        border-radius: 50%;
+        border: 2px solid rgba(223, 240, 242, 0.28);
+        border-color: rgba(223, 240, 242, 0.28) transparent transparent transparent;
+      }
+
+      .leves::after {
+        inset: 20px 22px 24px;
+      }
+
       .section {
         margin-top: 20px;
         padding: 24px;
       }
+
       .section h2 {
-        font-size: 1.35rem;
+        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+        font-size: 1.7rem;
+        letter-spacing: -0.04em;
         margin-bottom: 8px;
-        letter-spacing: -0.03em;
       }
-      .section .sub {
+
+      .sub {
         color: var(--muted);
-        line-height: 1.6;
+        line-height: 1.68;
         margin-bottom: 14px;
+        max-width: 70ch;
       }
+
       .toolbar {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 12px;
+        justify-content: space-between;
+        gap: 14px;
         flex-wrap: wrap;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
-      .mini {
-        font-size: 0.9rem;
-        color: var(--muted);
-      }
+
       .copy-btn {
         border: 0;
-        background: linear-gradient(135deg, rgba(143,230,197,.95), rgba(157,220,255,.95));
-        color: var(--text);
-        padding: 11px 14px;
         border-radius: 14px;
-        font-weight: 700;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, rgba(230, 162, 100, 1), rgba(170, 193, 139, 1));
+        color: #173537;
+        font-weight: 800;
         cursor: pointer;
-        box-shadow: 0 10px 20px rgba(125, 161, 200, 0.16);
+        box-shadow: 0 14px 24px rgba(4, 24, 24, 0.14);
       }
+
+      .copy-btn:hover {
+        filter: brightness(1.02);
+      }
+
       pre {
         margin: 0;
-        padding: 20px;
+        padding: 22px;
+        overflow: auto;
         white-space: pre-wrap;
-        line-height: 1.6;
+        line-height: 1.62;
         font-size: 0.96rem;
         border-radius: 22px;
-        background: var(--card-strong);
-        border: 1px solid var(--line);
-        overflow: auto;
+        color: #163335;
+        background: var(--panel-strong);
+        border: 1px solid rgba(20, 48, 51, 0.1);
       }
+
       .grid-2 {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
         margin-top: 16px;
       }
+
       .card {
         padding: 18px;
         border-radius: 22px;
-        background: rgba(255,255,255,.74);
-        border: 1px solid var(--line);
+        background: rgba(248, 237, 220, 0.78);
+        border: 1px solid rgba(20, 48, 51, 0.1);
       }
+
       .card h3 {
         margin-bottom: 8px;
-        font-size: 1.05rem;
+        font-size: 1.08rem;
       }
+
       .card p {
         color: var(--muted);
-        line-height: 1.65;
+        line-height: 1.6;
       }
+
       .pill-row {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         margin-top: 10px;
       }
+
       .pill {
         padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(255,255,255,.84);
-        border: 1px solid rgba(95,78,138,.12);
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(20, 48, 51, 0.1);
         font-size: 0.9rem;
       }
+
+      .pill a {
+        text-decoration: none;
+      }
+
       footer {
-        padding: 18px 4px 0;
-        color: var(--muted);
-        font-size: 0.92rem;
+        padding: 16px 4px 0;
+        color: rgba(244, 229, 206, 0.8);
+        font-size: 0.94rem;
         line-height: 1.6;
       }
-      @media (max-width: 900px) {
-        .hero { grid-template-columns: 1fr; }
-        .stats { grid-template-columns: 1fr; }
-        .grid-2 { grid-template-columns: 1fr; }
-        header { flex-direction: column; align-items: flex-start; }
+
+      .footer-note {
+        opacity: 0.9;
       }
-      @media (max-width: 560px) {
-        .wrap { width: min(100vw - 20px, 1180px); }
-        .hero-copy, .frog-panel, .section { padding: 18px; }
-        pre { font-size: 0.9rem; }
+
+      @media (max-width: 980px) {
+        .hero,
+        .grid-2,
+        .meta-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .art-panel {
+          min-height: 410px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .wrap {
+          width: min(100vw - 18px, 1240px);
+          padding-top: 12px;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .hero-copy,
+        .section {
+          padding: 18px;
+        }
+
+        .art-panel {
+          min-height: 360px;
+        }
+
+        h1 {
+          font-size: clamp(2.8rem, 16vw, 4rem);
+        }
       }
     </style>
   </head>
   <body>
     <div class="wrap">
-      <header>
+      <header class="topbar">
         <div class="brand">
-          <div class="mark">🐸</div>
-          <div>
-            <div class="eyebrow">Frogies · nat.fun concept · Bitcoin block-data rarity</div>
+          <div class="mark">◔</div>
+          <div class="brand-copy">
+            <div class="eyebrow">Frogies · Bitcoin block-data rarity · nat.fun</div>
           </div>
         </div>
-        <a class="btn" href="https://nat.fun" target="_blank" rel="noreferrer">nat.fun</a>
+        <a class="top-link" href="https://nat.fun" target="_blank" rel="noreferrer">nat.fun</a>
       </header>
 
       <main class="hero">
         <section class="panel hero-copy">
+          <div class="kicker">Mid-century modern / flat vector / artsy pond energy</div>
           <h1>Frogies</h1>
           <p class="lede">
-            A kawaii-first frog collection with pastel colors, a fully deterministic
-            rarity flow inspired by Natcats, and a supply target of 8,064.
-            The base trait families are locked in: body, eyes, expression, prop, and background.
-            Next we build out the individual trait behavior from the block data.
+            An art frog collection on Bitcoin — deterministic, block-data driven, and built to feel more like a vintage
+            poster than a mascot. Natcats-style logic stays intact, but the visual language shifts to a calmer,
+            cooler mid-century modern composition.
           </p>
           <div class="cta-row">
             <a class="btn primary" href="#traits">Copy trait sheet</a>
-            <a class="btn" href="#pocs">See art POCs</a>
+            <a class="btn" href="#pocs">Art directions</a>
           </div>
-          <div class="pill-row" style="margin-top:16px;">
-            <span class="pill">Base traits set</span>
-            <span class="pill">Body / eyes / expression</span>
-            <span class="pill">Props / background</span>
-            <span class="pill">Bitcoin block-driven</span>
-          </div>
-          <div class="stats">
-            <div class="stat"><strong>8,064</strong><span class="mini">total supply</span></div>
-            <div class="stat"><strong>Base set</strong><span class="mini">locked for trait building</span></div>
-            <div class="stat"><strong>Deterministic</strong><span class="mini">block-data driven traits</span></div>
+          <div class="meta-grid">
+            <div class="meta">
+              <strong>8,064</strong>
+              <div class="mini">total supply target</div>
+            </div>
+            <div class="meta">
+              <strong>Bitcoin</strong>
+              <div class="mini">block data decides rarity</div>
+            </div>
+            <div class="meta">
+              <strong>No mascot</strong>
+              <div class="mini">more art object, less character brand</div>
+            </div>
           </div>
         </section>
 
-        <section class="panel frog-panel" aria-label="Cute frog illustration">
+        <section class="panel art-panel" aria-label="Mid-century frog pond illustration">
           <div class="pond">
-            <div class="sun-disc"></div>
-            <div class="arc one"></div>
-            <div class="arc two"></div>
-            <div class="water-band"></div>
+            <div class="lotus">
+              <div class="flower">
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="core"></div>
+              </div>
+              <div class="stem"></div>
+            </div>
+            <div class="ripples"></div>
+            <div class="ring-left"></div>
+            <div class="ring-right"></div>
             <div class="pad small-left"></div>
             <div class="pad small-right"></div>
-            <div class="pad"></div>
-            <div class="frog" role="img" aria-label="A cute pastel frog sitting on a lily pad in a calm pond">
-              <div class="shadow"></div>
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="head"></div>
-              <div class="mouth"></div>
-              <div class="arm left"></div>
-              <div class="arm right"></div>
-              <div class="belly"></div>
+            <div class="pad big"></div>
+            <div class="frog" role="img" aria-label="A stylized frog sitting on a lily pad and reaching toward a fly">
               <div class="body"></div>
-              <div class="leg left"></div>
-              <div class="leg right"></div>
+              <div class="head"></div>
+              <div class="eye"></div>
+              <div class="mouth"></div>
+              <div class="belly"></div>
+              <div class="leg front"></div>
+              <div class="leg back"></div>
+              <div class="foot"></div>
+              <div class="tongue"></div>
             </div>
+            <div class="fly">
+              <div class="eye"></div>
+              <div class="body"></div>
+            </div>
+            <div class="leves"></div>
           </div>
         </section>
       </main>
@@ -561,18 +901,20 @@
         <div class="toolbar">
           <div>
             <h2>Copy / paste trait sheet</h2>
-            <p class="sub">Draft counts are next to each trait so you can move things around fast.</p>
+            <p class="sub">
+              The trait families stay deterministic and copy-friendly. I kept the counts intact, but changed the framing to fit the new art direction.
+            </p>
           </div>
           <button class="copy-btn" id="copyBtn">Copy traits</button>
         </div>
         <pre id="traitsBlock">FROGIES TRAITS (draft counts)
 
 CORE STYLE
-- Kawaii / cute
-- Pastel palette
-- Soft, chunky, sticker-like silhouettes
-- Big readable faces
+- Mid-century modern
+- Flat vector illustration
+- Calmer, artsy, editorial composition
 - No mascot
+- Deterministic from Bitcoin block data
 
 SUPPLY
 - 8,064 total
@@ -638,48 +980,56 @@ BACKGROUND / AURA
 - neon vapor — 256
 
 RARITY DIRECTION
-- Common = soft greens, sleepy faces, simple accessories
-- Uncommon = pastel variants, more personality
+- Common = soft greens, quiet faces, simple accessories
+- Uncommon = deeper color shifts, a little more attitude
 - Rare = gold eyes, crowns, stronger glow, more dramatic props
 - Ultra-rare = gold body, diamond body, laser eyes, top-tier aura effects
 
 NOTES
 - The block data should decide which traits appear
-- Rare traits should be driven by rarer deterministic patterns
-- Gold / diamond should be much less common than green bodies
+- Rare traits should come from rarer deterministic patterns
+- Gold / diamond should stay much less common than green bodies
 - Laser eyes should be special, not frequent
-- The whole collection should still feel cute even at the rare end</pre>
+- The whole collection should still feel like art, even at the rare end</pre>
       </section>
 
       <section class="panel section" id="pocs">
-        <h2>Art proof of concept</h2>
-        <p class="sub">Three directions are included in the repo: a softer pastel pond, a premium kawaii night take, and a new flat-vector editorial pond direction.</p>
+        <h2>Art directions</h2>
+        <p class="sub">
+          The main direction now leans mid-century modern and editorial. The older studies are still in the repo, but the homepage is framed around the new art-first look.
+        </p>
         <div class="grid-2">
           <div class="card">
-            <h3>Pastel Pond</h3>
-            <p>Airy, soft, bright, and closest to the default kawaii vibe. Good for the main collection identity.</p>
-            <div class="pill-row">
-              <span class="pill"><a href="./pastel-pond/" style="color:inherit;text-decoration:none;">Open demo</a></span>
-              <span class="pill">soft gradients</span>
-              <span class="pill">cute-first</span>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Kawaii Night</h3>
-            <p>Darker and more premium, while keeping the frogs cute. Good for rare variants and special drops.</p>
-            <div class="pill-row">
-              <span class="pill"><a href="./kawaii-night/" style="color:inherit;text-decoration:none;">Open demo</a></span>
-              <span class="pill">premium glow</span>
-              <span class="pill">rare-tier focus</span>
-            </div>
-          </div>
-          <div class="card">
             <h3>Editorial Pond</h3>
-            <p>Flat vector, minimalist, pastel, and closer to the reference image. Best candidate for the main art direction.</p>
+            <p>
+              The strongest candidate for the collection identity: flat vector, calm palette, and a composed pond scene with a vintage poster feel.
+            </p>
             <div class="pill-row">
-              <span class="pill"><a href="./editorial-pond/" style="color:inherit;text-decoration:none;">Open demo</a></span>
+              <span class="pill"><a href="./editorial-pond/">Open demo</a></span>
               <span class="pill">flat vector</span>
-              <span class="pill">storybook calm</span>
+              <span class="pill">mid-century composition</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Pastel Pond</h3>
+            <p>
+              A softer study that keeps the frog readable, but it is now treated more like a legacy sketch than the main identity.
+            </p>
+            <div class="pill-row">
+              <span class="pill"><a href="./pastel-pond/">Open demo</a></span>
+              <span class="pill">soft palette</span>
+              <span class="pill">legacy study</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Night Pond</h3>
+            <p>
+              A darker take for special moods and rarer variants. Good for metallic or high-contrast treatments without bringing back the cute mascot energy.
+            </p>
+            <div class="pill-row">
+              <span class="pill"><a href="./kawaii-night/">Open demo</a></span>
+              <span class="pill">night mode</span>
+              <span class="pill">rare-tier tone</span>
             </div>
           </div>
         </div>
@@ -688,27 +1038,29 @@ NOTES
       <section class="panel section">
         <h2>Process notes</h2>
         <p class="sub">
-          The collection is intended to follow the Natcats spirit: a deterministic system where the Bitcoin block data decides the outcome,
-          while the trait set itself stays curated and easy to reason about.
+          Frogies keeps the Natcats spirit: Bitcoin block data decides the outcome, while the trait set stays curated and easy to reason about. The website itself now follows the same art direction — cooler, more sculptural, and less playful-cartoon.
         </p>
         <div class="pill-row">
           <span class="pill">Bitcoin block data</span>
           <span class="pill">deterministic rarity</span>
-          <span class="pill">kawaii frogs</span>
-          <span class="pill">pastel palette</span>
+          <span class="pill">art frog collection</span>
+          <span class="pill">mid-century modern</span>
           <span class="pill">8,064 supply</span>
           <span class="pill">nat.fun launch flow</span>
         </div>
       </section>
 
       <footer>
-        Built for Frogies. If you want, the next pass can turn this into a more finished launch page with mint/launch copy, social links, and collection preview art.
+        <div class="footer-note">
+          Built for Frogies. Next pass can refine the hero illustration further or turn this into a proper launch page once the collection direction is locked.
+        </div>
       </footer>
     </div>
 
     <script>
       const copyBtn = document.getElementById('copyBtn');
       const traitsBlock = document.getElementById('traitsBlock');
+
       copyBtn.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(traitsBlock.innerText);
