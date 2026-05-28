@@ -25,6 +25,19 @@
         --sand: #efe0c0;
         --gold: #cb9d48;
         --shadow: 0 24px 60px rgba(4, 24, 24, 0.3);
+        --scene-top: #0f4a4b;
+        --scene-bottom: #17484a;
+        --scene-glow: rgba(231, 175, 143, 0.18);
+        --frog-body-top: #9cd35b;
+        --frog-body-bottom: #86bb46;
+        --frog-head-top: #a6db68;
+        --frog-head-bottom: #92c453;
+        --frog-belly-top: #f1e6cd;
+        --frog-belly-bottom: #fff7e8;
+        --frog-leg-top: #8fc451;
+        --frog-leg-bottom: #7da842;
+        --frog-foot-top: #7da842;
+        --frog-foot-bottom: #71993d;
       }
 
       * {
@@ -260,6 +273,178 @@
         background: rgba(255, 255, 255, 0.42);
       }
 
+      .studio-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .trait-group {
+        display: grid;
+        gap: 12px;
+      }
+
+      .trait-group + .trait-group {
+        margin-top: 16px;
+      }
+
+      .trait-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-weight: 750;
+        color: var(--ink);
+      }
+
+      .trait-label span {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+
+      .choice-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .trait-choice {
+        position: relative;
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        padding: 12px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(20, 48, 51, 0.12);
+        background: rgba(255, 255, 255, 0.58);
+        cursor: pointer;
+        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+
+      .trait-choice:hover {
+        transform: translateY(-1px);
+        border-color: rgba(20, 48, 51, 0.2);
+      }
+
+      .trait-choice input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .trait-choice .box {
+        width: 22px;
+        height: 22px;
+        margin-top: 1px;
+        border-radius: 7px;
+        border: 1.5px solid rgba(20, 48, 51, 0.2);
+        background: var(--choice-swatch, linear-gradient(180deg, #c7d7b0, #97b96d));
+        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.18);
+        position: relative;
+      }
+
+      .trait-choice .box::after {
+        content: "";
+        position: absolute;
+        inset: 4px 5px 5px 4px;
+        border-radius: 4px;
+        border: 2px solid rgba(246, 241, 228, 0.92);
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .trait-choice input:checked + .box::after {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .trait-choice input:checked ~ .trait-copy .trait-title {
+        color: var(--ink);
+      }
+
+      .trait-choice input:checked ~ .trait-copy .trait-note {
+        color: var(--ink-soft);
+      }
+
+      .trait-copy {
+        display: grid;
+        gap: 3px;
+      }
+
+      .trait-title {
+        font-weight: 750;
+        color: rgba(20, 48, 51, 0.86);
+      }
+
+      .trait-note {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.4;
+      }
+
+      .studio-side {
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+
+      .studio-card {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.46);
+        border: 1px solid rgba(20, 48, 51, 0.1);
+      }
+
+      .studio-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(20, 48, 51, 0.08);
+        font-weight: 700;
+      }
+
+      .studio-badge::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--olive);
+        box-shadow: 0 0 0 4px rgba(138, 169, 111, 0.16);
+      }
+
+      .studio-card p {
+        color: var(--ink-soft);
+        line-height: 1.65;
+        font-size: 0.98rem;
+      }
+
+      .roadmap {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .roadmap .mini {
+        color: var(--muted);
+      }
+
+      .roadmap-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .roadmap-pills .pill {
+        background: rgba(20, 48, 51, 0.06);
+      }
+
       .meta strong {
         display: block;
         font-size: 1.24rem;
@@ -277,8 +462,8 @@
         min-height: 470px;
         background:
           linear-gradient(180deg, rgba(10, 58, 59, 0.12), rgba(10, 58, 59, 0.22)),
-          radial-gradient(circle at 20% 22%, rgba(231, 175, 143, 0.18), transparent 19%),
-          linear-gradient(180deg, #0f4a4b 0%, #17484a 100%);
+          radial-gradient(circle at 20% 22%, var(--scene-glow), transparent 19%),
+          linear-gradient(180deg, var(--scene-top) 0%, var(--scene-bottom) 100%);
         overflow: hidden;
       }
 
@@ -488,7 +673,7 @@
         width: 158px;
         height: 100px;
         border-radius: 60px 72px 40px 48px;
-        background: linear-gradient(180deg, #9cd35b 0%, #86bb46 100%);
+        background: linear-gradient(180deg, var(--frog-body-top) 0%, var(--frog-body-bottom) 100%);
         box-shadow: inset -10px -12px 0 rgba(37, 76, 27, 0.06);
       }
 
@@ -499,7 +684,7 @@
         width: 132px;
         height: 84px;
         border-radius: 52px 62px 28px 34px;
-        background: linear-gradient(180deg, #a6db68 0%, #92c453 100%);
+        background: linear-gradient(180deg, var(--frog-head-top) 0%, var(--frog-head-bottom) 100%);
         box-shadow: inset -8px -6px 0 rgba(37, 76, 27, 0.05);
       }
 
@@ -565,13 +750,13 @@
         width: 74px;
         height: 72px;
         border-radius: 34px 34px 30px 30px;
-        background: linear-gradient(180deg, #f1e6cd 0%, #fff7e8 100%);
+        background: linear-gradient(180deg, var(--frog-belly-top) 0%, var(--frog-belly-bottom) 100%);
         clip-path: polygon(14% 0, 84% 0, 100% 40%, 84% 100%, 18% 100%, 0 46%);
       }
 
       .frog .leg {
         position: absolute;
-        background: linear-gradient(180deg, #8fc451, #7da842);
+        background: linear-gradient(180deg, var(--frog-leg-top), var(--frog-leg-bottom));
       }
 
       .frog .leg.back {
@@ -599,7 +784,7 @@
         left: 0;
         bottom: 10px;
         border-radius: 999px;
-        background: linear-gradient(180deg, #7da842, #71993d);
+        background: linear-gradient(180deg, var(--frog-foot-top), var(--frog-foot-bottom));
         clip-path: polygon(0 50%, 100% 0, 100% 100%);
       }
 
@@ -1380,6 +1565,130 @@
         </section>
       </main>
 
+      <section class="panel section" id="studio">
+        <div class="toolbar">
+          <div>
+            <h2>Example version</h2>
+            <p class="sub">
+              This is the first live base version. Pick a frog color and background to see how the same pond scene can branch into traits later.
+            </p>
+          </div>
+          <div class="studio-badge" id="studioSummary">Sage frog · Editorial pond</div>
+        </div>
+
+        <div class="studio-grid">
+          <div>
+            <div class="trait-group">
+              <div class="trait-label">Body color <span>start here</span></div>
+              <div class="choice-grid" data-group="body">
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #b8df71, #87bb44);">
+                  <input type="radio" name="bodyColor" value="sage" checked />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Sage</span>
+                    <span class="trait-note">calm default, closest to the current base</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #c9ee82, #9ac95a);">
+                  <input type="radio" name="bodyColor" value="mint" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Mint</span>
+                    <span class="trait-note">lighter, softer, more kawaii without going plush</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #a9cf73, #779f45);">
+                  <input type="radio" name="bodyColor" value="olive" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Olive</span>
+                    <span class="trait-note">deeper pond green for a moodier base</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #e2b5c8, #c982a1);">
+                  <input type="radio" name="bodyColor" value="blush" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Blush</span>
+                    <span class="trait-note">a rare pastel outlier for special drops</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="trait-group">
+              <div class="trait-label">Background <span>second layer</span></div>
+              <div class="choice-grid" data-group="scene">
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #0f4a4b, #17484a);">
+                  <input type="radio" name="sceneColor" value="editorial" checked />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Editorial pond</span>
+                    <span class="trait-note">the strongest candidate for the core identity</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #c8d7b7, #92b46d);">
+                  <input type="radio" name="sceneColor" value="dawn" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Dawn marsh</span>
+                    <span class="trait-note">soft warm light with a brighter, fresher mood</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #243a64, #132a4c);">
+                  <input type="radio" name="sceneColor" value="moonlit" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Moonlit swamp</span>
+                    <span class="trait-note">darker, calmer, and more premium feeling</span>
+                  </span>
+                </label>
+                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #0e7c8f, #0a5f73);">
+                  <input type="radio" name="sceneColor" value="aqua" />
+                  <span class="box"></span>
+                  <span class="trait-copy">
+                    <span class="trait-title">Aqua glow</span>
+                    <span class="trait-note">cooler water tone for a more graphic look</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-side">
+            <div class="studio-card">
+              <p>
+                This is the first example version, not the final trait matrix. The plan is to lock the base feel here, then add eyes, mouth, head gear, swamp accessories, and finally more scene logic.
+              </p>
+              <div class="roadmap">
+                <div class="mini">Next trait buckets</div>
+                <div class="roadmap-pills">
+                  <span class="pill">eyes</span>
+                  <span class="pill">mouth / expression</span>
+                  <span class="pill">head gear</span>
+                  <span class="pill">swamp accessories</span>
+                  <span class="pill">background details</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <p>
+                The live illustration above should respond to your choices so we can judge the base art before the rest of the collection is expanded.
+              </p>
+              <div class="roadmap" style="margin-top: 12px;">
+                <div class="mini">What we’re testing</div>
+                <div class="roadmap-pills">
+                  <span class="pill">body color</span>
+                  <span class="pill">background</span>
+                  <span class="pill">single hero scene</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="panel section" id="traits">
         <div class="toolbar">
           <div>
@@ -1530,6 +1839,123 @@ NOTES
     <script>
       const copyBtn = document.getElementById('copyBtn');
       const traitsBlock = document.getElementById('traitsBlock');
+      const artPanel = document.querySelector('.art-panel');
+      const studioSummary = document.getElementById('studioSummary');
+      const traitInputs = document.querySelectorAll('input[name="bodyColor"], input[name="sceneColor"]');
+
+      const palettes = {
+        body: {
+          sage: {
+            label: 'Sage frog',
+            vars: {
+              '--frog-body-top': '#b0de6a',
+              '--frog-body-bottom': '#84b943',
+              '--frog-head-top': '#bcdf78',
+              '--frog-head-bottom': '#91c84f',
+              '--frog-belly-top': '#f1e6cd',
+              '--frog-belly-bottom': '#fff7ea',
+              '--frog-leg-top': '#9bc95d',
+              '--frog-leg-bottom': '#7ea543',
+              '--frog-foot-top': '#809f45',
+              '--frog-foot-bottom': '#6e9238'
+            }
+          },
+          mint: {
+            label: 'Mint frog',
+            vars: {
+              '--frog-body-top': '#c6ee86',
+              '--frog-body-bottom': '#97ca59',
+              '--frog-head-top': '#d3f09a',
+              '--frog-head-bottom': '#a9d96d',
+              '--frog-belly-top': '#f7efda',
+              '--frog-belly-bottom': '#fffaf0',
+              '--frog-leg-top': '#afd76f',
+              '--frog-leg-bottom': '#90bb4f',
+              '--frog-foot-top': '#97b655',
+              '--frog-foot-bottom': '#7f9f42'
+            }
+          },
+          olive: {
+            label: 'Olive frog',
+            vars: {
+              '--frog-body-top': '#b2d177',
+              '--frog-body-bottom': '#7ca447',
+              '--frog-head-top': '#bed77c',
+              '--frog-head-bottom': '#96be51',
+              '--frog-belly-top': '#efe5c9',
+              '--frog-belly-bottom': '#fff8e6',
+              '--frog-leg-top': '#8fb65c',
+              '--frog-leg-bottom': '#729944',
+              '--frog-foot-top': '#789644',
+              '--frog-foot-bottom': '#627f35'
+            }
+          },
+          blush: {
+            label: 'Blush frog',
+            vars: {
+              '--frog-body-top': '#e6bbcf',
+              '--frog-body-bottom': '#cc84a6',
+              '--frog-head-top': '#edc9da',
+              '--frog-head-bottom': '#d79aba',
+              '--frog-belly-top': '#f7ebee',
+              '--frog-belly-bottom': '#fff7f8',
+              '--frog-leg-top': '#d59ab1',
+              '--frog-leg-bottom': '#bf7694',
+              '--frog-foot-top': '#b86f8c',
+              '--frog-foot-bottom': '#9d5575'
+            }
+          }
+        },
+        scene: {
+          editorial: {
+            label: 'Editorial pond',
+            vars: {
+              '--scene-top': '#0f4a4b',
+              '--scene-bottom': '#17484a',
+              '--scene-glow': 'rgba(231, 175, 143, 0.18)'
+            }
+          },
+          dawn: {
+            label: 'Dawn marsh',
+            vars: {
+              '--scene-top': '#c8d7b7',
+              '--scene-bottom': '#92b46d',
+              '--scene-glow': 'rgba(255, 236, 192, 0.2)'
+            }
+          },
+          moonlit: {
+            label: 'Moonlit swamp',
+            vars: {
+              '--scene-top': '#243a64',
+              '--scene-bottom': '#132a4c',
+              '--scene-glow': 'rgba(238, 223, 185, 0.16)'
+            }
+          },
+          aqua: {
+            label: 'Aqua glow',
+            vars: {
+              '--scene-top': '#0e7c8f',
+              '--scene-bottom': '#0a5f73',
+              '--scene-glow': 'rgba(184, 240, 242, 0.16)'
+            }
+          }
+        }
+      };
+
+      function applyTraits() {
+        const bodyChoice = document.querySelector('input[name="bodyColor"]:checked')?.value || 'sage';
+        const sceneChoice = document.querySelector('input[name="sceneColor"]:checked')?.value || 'editorial';
+        const body = palettes.body[bodyChoice];
+        const scene = palettes.scene[sceneChoice];
+
+        Object.entries({ ...body.vars, ...scene.vars }).forEach(([key, value]) => {
+          artPanel.style.setProperty(key, value);
+        });
+
+        studioSummary.textContent = `${body.label} · ${scene.label}`;
+      }
+
+      traitInputs.forEach((input) => input.addEventListener('change', applyTraits));
 
       copyBtn.addEventListener('click', async () => {
         try {
@@ -1548,6 +1974,8 @@ NOTES
           setTimeout(() => (copyBtn.textContent = 'Copy traits'), 1400);
         }
       });
+
+      applyTraits();
     </script>
   </body>
 </html>

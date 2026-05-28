@@ -10,4 +10,5 @@ Kawaii/pastel Frogies concept for nat.fun.
 ## Notes
 - Supply target: 8,064
 - Traits are intended to be deterministic and driven by Bitcoin block data
-- The art direction should stay cute, pastel, and non-mascot
+- Art direction spec: `FROGIES_ART_DIRECTION.md`
+- The art direction should stay cute, editorial, pond-first, and non-mascot
