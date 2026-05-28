@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frogies — Editorial Pond POC</title>
+    <meta
+      name="description"
+      content="A flat-vector, editorial Frogies proof of concept inspired by Scandinavian minimal illustration and calm nature art."
+    />
+    <style>
+      :root {
+        --bg: #184e54;
+        --bg-soft: #245e64;
+        --panel: rgba(255, 255, 255, 0.08);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #f3f0ea;
+        --muted: rgba(243, 240, 234, 0.72);
+        --pad: #9dbf77;
+        --pad-deep: #89ad61;
+        --frog: #8fcc61;
+        --frog-alt: #c9df8a;
+        --belly: #f2f1e2;
+        --ink: #173232;
+        --pink: #efb2b8;
+        --dusty-blue: #a7c8ca;
+        --gold: #f4cf7d;
+        --shadow: rgba(0, 0, 0, 0.18);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 14% 8%, rgba(255,255,255,.05), transparent 18%),
+          radial-gradient(circle at 78% 18%, rgba(255,255,255,.04), transparent 16%),
+          linear-gradient(180deg, #123d42, var(--bg) 40%, #12353a);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      .wrap {
+        width: min(1180px, calc(100vw - 28px));
+        margin: 0 auto;
+        padding: 22px 0 50px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .sigil {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.06);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.88rem;
+        letter-spacing: 0.01em;
+      }
+      .toplink {
+        color: var(--text);
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,.06);
+        border: 1px solid var(--line);
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+      }
+      .scene-card {
+        position: relative;
+        min-height: 680px;
+        padding: 20px;
+      }
+      .scene {
+        position: relative;
+        height: 100%;
+        min-height: 640px;
+        border-radius: 24px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .scene[data-bg="sunrise"] { background: #25576a; }
+      .scene[data-bg="rainy"] { background: #19414b; }
+      .scene[data-bg="mist"] { background: #29514d; }
+      .scene::before,
+      .scene::after {
+        content: "";
+        position: absolute;
+        inset: auto;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+      .scene::before {
+        left: -8px;
+        top: 56px;
+        width: 124px;
+        height: 124px;
+        background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.04), transparent 55%);
+      }
+      .scene::after {
+        right: 40px;
+        bottom: 34px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, rgba(255,255,255,.05), transparent 62%);
+      }
+      .lotus {
+        position: absolute;
+        z-index: 1;
+      }
+      .lotus .stem {
+        position: absolute;
+        left: 50%;
+        top: 86px;
+        width: 5px;
+        height: 118px;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background: #93b870;
+      }
+      .lotus .petal {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 36px;
+        height: 58px;
+        border-radius: 100% 100% 52% 52%;
+        background: #f6e8e4;
+        transform-origin: 50% 100%;
+        transform: translateX(-50%) rotate(var(--r));
+        box-shadow: inset 0 -10px 0 rgba(239,178,184,.25);
+      }
+      .lotus .petal.alt { background: #efd4d6; }
+      .lotus .center {
+        position: absolute;
+        left: 50%;
+        top: 46px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        background: #f6c8cc;
+      }
+      .lotus.one { left: 28px; top: 18px; width: 110px; height: 210px; }
+      .lotus.one .petal:nth-child(1) { --r: -44deg; }
+      .lotus.one .petal:nth-child(2) { --r: -22deg; }
+      .lotus.one .petal:nth-child(3) { --r: 0deg; }
+      .lotus.one .petal:nth-child(4) { --r: 22deg; }
+      .lotus.one .petal:nth-child(5) { --r: 44deg; }
+      .lotus.one .petal:nth-child(6) { --r: -66deg; height: 50px; }
+      .lotus.one .petal:nth-child(7) { --r: 66deg; height: 50px; }
+      .lotus.two {
+        right: 24px;
+        bottom: 44px;
+        width: 78px;
+        height: 142px;
+        transform: scale(.72);
+        transform-origin: right bottom;
+      }
+      .lotus.two .petal:nth-child(1) { --r: -42deg; }
+      .lotus.two .petal:nth-child(2) { --r: -20deg; }
+      .lotus.two .petal:nth-child(3) { --r: 0deg; }
+      .lotus.two .petal:nth-child(4) { --r: 20deg; }
+      .lotus.two .petal:nth-child(5) { --r: 42deg; }
+      .lotus.two .petal:nth-child(6) { --r: -62deg; height: 42px; }
+      .lotus.two .petal:nth-child(7) { --r: 62deg; height: 42px; }
+      .pad {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--pad);
+        z-index: 2;
+      }
+      .pad::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.08);
+        clip-path: polygon(54% 52%, 100% 100%, 100% 0%);
+      }
+      .pad.big {
+        left: 126px;
+        top: 176px;
+        width: 460px;
+        height: 300px;
+        background: #87ad67;
+      }
+      .pad.small-a {
+        left: 18px;
+        bottom: 28px;
+        width: 250px;
+        height: 156px;
+        background: #9cbf7a;
+      }
+      .pad.small-b {
+        right: 26px;
+        bottom: 20px;
+        width: 236px;
+        height: 148px;
+        background: #9cc173;
+      }
+      .ripples {
+        position: absolute;
+        left: 104px;
+        top: 112px;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        border: 3px solid rgba(171, 206, 222, .65);
+        border-left-color: transparent;
+        border-right-color: transparent;
+        transform: rotate(-15deg);
+        z-index: 0;
+      }
+      .ripples::before,
+      .ripples::after {
+        content: "";
+        position: absolute;
+        inset: 14px;
+        border-radius: 50%;
+        border: 2px solid rgba(171, 206, 222, .45);
+        border-left-color: transparent;
+        border-right-color: transparent;
+      }
+      .ripples::after {
+        inset: 28px;
+        opacity: .8;
+      }
+      .ripples.b {
+        left: auto;
+        right: 54px;
+        bottom: 64px;
+        top: auto;
+        width: 74px;
+        height: 74px;
+        transform: rotate(12deg);
+      }
+      .fly {
+        position: absolute;
+        left: 322px;
+        top: 158px;
+        width: 48px;
+        height: 28px;
+        z-index: 5;
+      }
+      .fly::before,
+      .fly::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 20px;
+        height: 14px;
+        border-radius: 50% 50% 35% 35%;
+        background: rgba(225, 238, 240, .95);
+        box-shadow: inset 0 -2px 0 rgba(0,0,0,.1);
+      }
+      .fly::before { left: 0; transform: rotate(-12deg); }
+      .fly::after { right: 0; transform: rotate(12deg); }
+      .fly i {
+        position: absolute;
+        left: 18px;
+        top: 9px;
+        width: 12px;
+        height: 10px;
+        border-radius: 50%;
+        background: #1f191f;
+        display: block;
+      }
+      .fly i::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 1px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #1f191f;
+      }
+      .reeds {
+        position: absolute;
+        left: 88px;
+        bottom: 96px;
+        width: 70px;
+        height: 100px;
+        z-index: 1;
+      }
+      .reeds span {
+        position: absolute;
+        bottom: 0;
+        width: 4px;
+        border-radius: 999px;
+        background: #8fb168;
+      }
+      .reeds span:nth-child(1) { left: 6px; height: 82px; transform: rotate(-4deg); }
+      .reeds span:nth-child(2) { left: 20px; height: 94px; transform: rotate(2deg); }
+      .reeds span:nth-child(3) { left: 34px; height: 76px; transform: rotate(8deg); }
+      .reeds span:nth-child(4) { left: 48px; height: 88px; transform: rotate(-7deg); }
+      .reeds span::after {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: -8px;
+        width: 12px;
+        height: 12px;
+        border-radius: 70% 20% 70% 20%;
+        background: #9dbf7b;
+        transform: rotate(25deg);
+      }
+      .frog {
+        position: absolute;
+        left: 274px;
+        top: 224px;
+        width: 220px;
+        height: 160px;
+        z-index: 4;
+        --body: var(--frog);
+        --belly-color: var(--belly);
+        --accent: #80b95b;
+        --eye: #1f191f;
+        --mouth: #173232;
+      }
+      .frog[data-body="pastel-green"] { --body: #aacd83; --accent: #92b861; }
+      .frog[data-body="deep-teal"] { --body: #4a8a86; --accent: #326d68; }
+      .frog[data-body="pastel-blue"] { --body: #9cc7d8; --accent: #7daabf; }
+      .frog[data-body="pastel-pink"] { --body: #e5b4c0; --accent: #cd90a1; }
+      .frog[data-body="lilac"] { --body: #bca8d9; --accent: #9a83c0; }
+      .frog[data-body="gold"] { --body: #f2cf6c; --accent: #d4ac47; }
+      .frog[data-body="diamond"] { --body: #e8f5f2; --accent: #bfd1ce; }
+      .frog[data-eyes="laser"] { --eye: #ff6c82; }
+      .frog[data-eyes="gold"] { --eye: #bf8b1f; }
+      .frog .shadow {
+        position: absolute;
+        left: 52px;
+        right: 40px;
+        bottom: 16px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(0,0,0,.12);
+        filter: blur(2px);
+      }
+      .frog .leg-back,
+      .frog .leg-front,
+      .frog .arm,
+      .frog .thigh {
+        position: absolute;
+        background: var(--body);
+      }
+      .frog .leg-back {
+        left: 144px;
+        bottom: 22px;
+        width: 56px;
+        height: 38px;
+        border-radius: 30px 16px 16px 30px;
+        transform: rotate(22deg);
+      }
+      .frog .thigh {
+        left: 126px;
+        bottom: 30px;
+        width: 60px;
+        height: 58px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .frog .arm {
+        left: 42px;
+        bottom: 54px;
+        width: 74px;
+        height: 18px;
+        border-radius: 18px;
+        transform: rotate(24deg);
+      }
+      .frog .arm.a { left: 54px; bottom: 44px; transform: rotate(-24deg); width: 64px; }
+      .frog .head {
+        position: absolute;
+        left: 38px;
+        top: 10px;
+        width: 140px;
+        height: 110px;
+        border-radius: 58% 58% 48% 48%;
+        background: var(--body);
+      }
+      .frog .cheek {
+        position: absolute;
+        top: 72px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: rgba(255, 192, 206, .24);
+      }
+      .frog .cheek.left { left: 30px; }
+      .frog .cheek.right { right: 28px; }
+      .frog .belly {
+        position: absolute;
+        left: 70px;
+        top: 54px;
+        width: 84px;
+        height: 88px;
+        border-radius: 38% 38% 44% 44%;
+        background: var(--belly-color);
+      }
+      .frog .eye {
+        position: absolute;
+        top: 14px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--body);
+      }
+      .frog .eye.left { left: 54px; }
+      .frog .eye.right { left: 112px; }
+      .frog .eye::after {
+        content: "";
+        position: absolute;
+        inset: 14px;
+        border-radius: 50%;
+        background: var(--eye);
+      }
+      .frog[data-eyes="wide"] .eye::after { box-shadow: 0 0 0 5px rgba(255, 255, 255, .18); }
+      .frog[data-eyes="wink"] .eye.right::after {
+        inset: 22px 8px 16px 8px;
+        border-radius: 999px;
+        background: transparent;
+        border-bottom: 4px solid var(--eye);
+      }
+      .frog[data-eyes="crossed"] .eye::after {
+        inset: 15px;
+        background: transparent;
+        border-top: 4px solid var(--eye);
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        transform: rotate(45deg);
+      }
+      .frog[data-eyes="laser"] .eye::after {
+        inset: 15px 8px 18px 8px;
+        border-radius: 999px;
+        background: var(--eye);
+        box-shadow: 0 0 0 8px rgba(255, 108, 130, .15);
+      }
+      .frog[data-eyes="laser"] .eye::before {
+        content: "";
+        position: absolute;
+        left: 100%;
+        top: 18px;
+        width: 160px;
+        height: 4px;
+        background: linear-gradient(90deg, rgba(255,108,130,.9), rgba(255,108,130,.12));
+      }
+      .frog[data-eyes="gold"] .eye::after { background: var(--eye); }
+      .frog .mouth {
+        position: absolute;
+        left: 94px;
+        top: 86px;
+        width: 26px;
+        height: 14px;
+        border-bottom: 4px solid var(--mouth);
+        border-radius: 0 0 16px 16px;
+      }
+      .frog[data-mood="smirk"] .mouth {
+        width: 30px;
+        left: 92px;
+        border-bottom-width: 3px;
+        border-radius: 0 0 24px 14px;
+      }
+      .frog[data-mood="open"] .mouth {
+        width: 20px;
+        height: 18px;
+        border: 4px solid var(--mouth);
+        border-top: 0;
+        border-radius: 0 0 18px 18px;
+      }
+      .frog .prop {
+        position: absolute;
+        pointer-events: none;
+      }
+      .frog[data-prop="fly"] .prop.fly {
+        display: block;
+      }
+      .frog[data-prop="bubble"] .prop.bubble {
+        display: block;
+      }
+      .frog[data-prop="none"] .prop { display: none; }
+      .prop.fly {
+        display: none;
+        left: 22px;
+        top: 42px;
+        width: 36px;
+        height: 22px;
+      }
+      .prop.fly::before,
+      .prop.fly::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 16px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(223, 239, 242, .9);
+      }
+      .prop.fly::before { left: 0; transform: rotate(-8deg); }
+      .prop.fly::after { right: 0; transform: rotate(8deg); }
+      .prop.fly i {
+        position: absolute;
+        left: 14px;
+        top: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #2b2b2b;
+        display: block;
+      }
+      .prop.bubble {
+        display: none;
+        right: 28px;
+        top: 16px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 3px solid rgba(199, 221, 226, .8);
+      }
+      .prop.bubble::after {
+        content: "";
+        position: absolute;
+        left: -30px;
+        top: 14px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid rgba(199, 221, 226, .4);
+      }
+      .label-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .chip {
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.05);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+      .aside {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      h1, h2, h3, p { margin: 0; }
+      h1 {
+        font-size: clamp(2.4rem, 5vw, 4.4rem);
+        line-height: .95;
+        letter-spacing: -0.06em;
+        margin-top: 8px;
+      }
+      .lede {
+        margin-top: 12px;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.03rem;
+      }
+      .panel-block {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255,255,255,.05);
+        border: 1px solid var(--line);
+      }
+      .panel-block h2 {
+        font-size: 1.08rem;
+        margin-bottom: 8px;
+      }
+      .panel-block p {
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: .95rem;
+      }
+      .control-group {
+        margin-top: 14px;
+      }
+      .control-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+        color: var(--text);
+        font-size: .92rem;
+      }
+      .control-title span:last-child { color: var(--muted); }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .btn {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,.05);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font: inherit;
+        transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      }
+      .btn:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.24); }
+      .btn.active {
+        background: rgba(255,255,255,.12);
+        border-color: rgba(255,255,255,.28);
+      }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .summary div {
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid var(--line);
+      }
+      .summary .key {
+        display: block;
+        color: var(--muted);
+        font-size: .8rem;
+        margin-bottom: 4px;
+      }
+      .summary .val {
+        display: block;
+        color: var(--text);
+        font-weight: 650;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-size: .94rem;
+        color: var(--text);
+        background: rgba(255,255,255,.04);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .mini-note {
+        color: var(--muted);
+        font-size: .9rem;
+        line-height: 1.6;
+      }
+      footer {
+        margin-top: 16px;
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: .92rem;
+      }
+      @media (max-width: 980px) {
+        .hero { grid-template-columns: 1fr; }
+        .scene-card { min-height: 620px; }
+      }
+      @media (max-width: 620px) {
+        .wrap { width: min(100vw - 20px, 1180px); }
+        .scene-card, .aside { padding: 14px; }
+        .scene { min-height: 520px; }
+        .summary { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <div class="sigil">🐸</div>
+          <div>
+            <div class="eyebrow">Flat vector · editorial cartoon · Scandinavian minimal · lo-fi calming</div>
+          </div>
+        </div>
+        <a class="toplink" href="../">← Frogies home</a>
+      </div>
+
+      <main class="hero">
+        <section class="panel scene-card">
+          <div class="scene" id="scene" data-bg="pond">
+            <div class="lotus one">
+              <span class="stem"></span>
+              <span class="petal"></span><span class="petal alt"></span><span class="petal"></span><span class="petal alt"></span><span class="petal"></span><span class="petal"></span><span class="petal alt"></span>
+              <span class="center"></span>
+            </div>
+            <div class="lotus two">
+              <span class="stem"></span>
+              <span class="petal"></span><span class="petal alt"></span><span class="petal"></span><span class="petal alt"></span><span class="petal"></span><span class="petal"></span><span class="petal alt"></span>
+              <span class="center"></span>
+            </div>
+            <div class="pad small-a"></div>
+            <div class="pad big"></div>
+            <div class="pad small-b"></div>
+            <div class="ripples"></div>
+            <div class="ripples b"></div>
+            <div class="reeds"><span></span><span></span><span></span><span></span></div>
+            <div class="fly"><i></i></div>
+            <div class="frog" id="frog" data-body="pastel-green" data-eyes="wide" data-mood="calm" data-prop="fly">
+              <div class="shadow"></div>
+              <div class="thigh"></div>
+              <div class="leg-back"></div>
+              <div class="arm"></div>
+              <div class="arm a"></div>
+              <div class="head"></div>
+              <div class="belly"></div>
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="cheek left"></div>
+              <div class="cheek right"></div>
+              <div class="mouth"></div>
+              <div class="prop fly"><i></i></div>
+              <div class="prop bubble"></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel aside">
+          <div>
+            <h1>Frogies, but flatter.</h1>
+            <p class="lede">
+              This direction leans into flat vector illustration, minimal digital art,
+              mid-century calm, and simple geometric shapes. It keeps the frog charm, but
+              lets each trait swap cleanly without losing the composition.
+            </p>
+            <div class="label-row">
+              <span class="chip">flat colors</span>
+              <span class="chip">clean negative space</span>
+              <span class="chip">pastel palette</span>
+              <span class="chip">nature theme</span>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <h2>Trait-driven art controls</h2>
+            <p>
+              Each trait set maps to a visual layer: body color, eye expression, prop, and background mood.
+              That keeps the art deterministic while still feeling hand-illustrated.
+            </p>
+
+            <div class="control-group">
+              <div class="control-title"><span>Body</span><span id="bodyLabel">pastel green</span></div>
+              <div class="controls" data-group="body">
+                <button class="btn active" data-value="pastel-green">Pastel green</button>
+                <button class="btn" data-value="deep-teal">Deep teal</button>
+                <button class="btn" data-value="pastel-pink">Pastel pink</button>
+                <button class="btn" data-value="lilac">Lilac</button>
+                <button class="btn" data-value="gold">Gold</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-title"><span>Eyes</span><span id="eyesLabel">wide sleepy</span></div>
+              <div class="controls" data-group="eyes">
+                <button class="btn active" data-value="wide">Wide sleepy</button>
+                <button class="btn" data-value="wink">One-eye wink</button>
+                <button class="btn" data-value="crossed">Crossed</button>
+                <button class="btn" data-value="laser">Laser</button>
+                <button class="btn" data-value="gold">Gold</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-title"><span>Prop</span><span id="propLabel">fly</span></div>
+              <div class="controls" data-group="prop">
+                <button class="btn active" data-value="fly">Fly</button>
+                <button class="btn" data-value="bubble">Bubble</button>
+                <button class="btn" data-value="none">None</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-title"><span>Background</span><span id="bgLabel">pond</span></div>
+              <div class="controls" data-group="bg">
+                <button class="btn active" data-value="pond">Pond</button>
+                <button class="btn" data-value="sunrise">Sunrise</button>
+                <button class="btn" data-value="rainy">Rainy</button>
+                <button class="btn" data-value="mist">Mist</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <h2>Current trait readout</h2>
+            <div class="summary">
+              <div><span class="key">body</span><span class="val" id="readBody">pastel green</span></div>
+              <div><span class="key">eyes</span><span class="val" id="readEyes">wide sleepy</span></div>
+              <div><span class="key">prop</span><span class="val" id="readProp">fly</span></div>
+              <div><span class="key">background</span><span class="val" id="readBg">pond</span></div>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <h2>Why this fits the reference</h2>
+            <p class="mini-note">
+              Soft pastel fills, almost no texture, simplified geometry, roomy composition, and a calm nature scene.
+              The frog can still express rarity through trait changes — gold, laser, bubbles, crowns, and color variants —
+              without breaking the illustration language.
+            </p>
+          </div>
+
+          <footer>
+            This is a working style direction, not the final lock. If this feels right, the next step is to bring the rest of the collection into this same flat editorial language.
+          </footer>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      const frog = document.getElementById('frog');
+      const scene = document.getElementById('scene');
+      const groups = document.querySelectorAll('[data-group]');
+      const labels = {
+        body: document.getElementById('bodyLabel'),
+        eyes: document.getElementById('eyesLabel'),
+        prop: document.getElementById('propLabel'),
+        bg: document.getElementById('bgLabel'),
+        readBody: document.getElementById('readBody'),
+        readEyes: document.getElementById('readEyes'),
+        readProp: document.getElementById('readProp'),
+        readBg: document.getElementById('readBg'),
+      };
+      const pretty = {
+        'pastel-green': 'pastel green',
+        'deep-teal': 'deep teal',
+        'pastel-pink': 'pastel pink',
+        lilac: 'lilac',
+        gold: 'gold',
+        wide: 'wide sleepy',
+        wink: 'one-eye wink',
+        crossed: 'crossed',
+        laser: 'laser eyes',
+        bubble: 'bubble',
+        none: 'none',
+        pond: 'pond',
+        sunrise: 'sunrise',
+        rainy: 'rainy',
+        mist: 'mist',
+      };
+
+      function setTrait(group, value) {
+        if (group === 'bg') {
+          scene.dataset.bg = value;
+        } else {
+          frog.dataset[group] = value;
+        }
+        labels[group].textContent = pretty[value];
+        labels['read' + group[0].toUpperCase() + group.slice(1)].textContent = pretty[value];
+      }
+
+      groups.forEach(group => {
+        const name = group.dataset.group;
+        group.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            setTrait(name, btn.dataset.value);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
