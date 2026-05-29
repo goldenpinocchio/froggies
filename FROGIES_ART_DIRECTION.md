@@ -1,7 +1,10 @@
-# Frogies Art Direction Spec
+# Froggies Art Direction Spec
 
 ## North star
-Frogies should feel like a **cute-but-not-mascot** pond collection with a soft editorial edge:
+Froggies should feel like a **cute-but-not-mascot** pond collection with a soft editorial edge:
+- target supply: **2,016**
+- one frog hero per NFT
+- trait combinations should stay deterministic and easy to explain
 - **single frog hero per NFT**
 - **modular traits** that can be swapped cleanly
 - **flat vector / poster-like** illustration language
@@ -61,7 +64,7 @@ Good direction:
 
 Rule:
 - body color should change the feel of the frog, but not the design language
-- even rare colors should still feel like the same Frogies family
+- even rare colors should still feel like the same Froggies family
 
 ### 2) Eyes
 Eyes should carry personality more than complexity.
@@ -174,7 +177,7 @@ Principles:
 - the mapping should be easy to explain and easy to copy/paste into the launch docs
 
 ## What success looks like
-A strong Frogies base should:
+A strong Froggies base should:
 - read instantly as a frog
 - feel cute without becoming mascoty
 - support a modular trait system
@@ -185,4 +188,6 @@ A strong Frogies base should:
 ## Short brief version
 If you need the one-paragraph version:
 
-> Frogies is a cute-but-not-mascot pond collection with one frog hero per NFT, built from a modular trait system. Use flat-vector, editorial pond art with pastel body colors, expressive eyes, subtle mouths, small head gear, pond/swamp accessories, and simple atmospheric backgrounds. The 6-up reference is only a variation board; the final NFTs are single images assembled from the same deterministic trait stack driven by Bitcoin block data.
+> Froggies is a cute-but-not-mascot pond collection with one frog hero per NFT, built from a modular trait system. Use flat-vector, editorial pond art with pastel body colors, expressive eyes, subtle mouths, small head gear, pond/swamp accessories, and simple atmospheric backgrounds. The 6-up reference is only a variation board; the final NFTs are single images assembled from the same deterministic trait stack driven by Bitcoin block data.
+>
+> Supply target: 2,016.

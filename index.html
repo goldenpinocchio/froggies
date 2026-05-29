@@ -1,1981 +1,501 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Frogies — an art frog collection on Bitcoin</title>
-    <meta
-      name="description"
-      content="Frogies is an art-forward Bitcoin frog collection concept for nat.fun, built around deterministic block-data rarity and a mid-century modern visual language."
-    />
-    <style>
-      :root {
-        --bg: #0f3f40;
-        --bg-2: #143f3f;
-        --panel: rgba(244, 229, 206, 0.94);
-        --panel-strong: rgba(248, 237, 220, 0.98);
-        --ink: #143033;
-        --ink-soft: #4c5d58;
-        --muted: #62706d;
-        --line: rgba(20, 48, 51, 0.12);
-        --olive: #8aa96f;
-        --sage: #a6c18b;
-        --sun: #e6a264;
-        --rose: #dd8f8f;
-        --sand: #efe0c0;
-        --gold: #cb9d48;
-        --shadow: 0 24px 60px rgba(4, 24, 24, 0.3);
-        --scene-top: #0f4a4b;
-        --scene-bottom: #17484a;
-        --scene-glow: rgba(231, 175, 143, 0.18);
-        --frog-body-top: #9cd35b;
-        --frog-body-bottom: #86bb46;
-        --frog-head-top: #a6db68;
-        --frog-head-bottom: #92c453;
-        --frog-belly-top: #f1e6cd;
-        --frog-belly-bottom: #fff7e8;
-        --frog-leg-top: #8fc451;
-        --frog-leg-bottom: #7da842;
-        --frog-foot-top: #7da842;
-        --frog-foot-bottom: #71993d;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        color: var(--ink);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background:
-          radial-gradient(circle at 12% 14%, rgba(238, 202, 166, 0.18), transparent 18%),
-          radial-gradient(circle at 82% 12%, rgba(181, 206, 153, 0.16), transparent 19%),
-          radial-gradient(circle at 72% 86%, rgba(233, 165, 123, 0.12), transparent 20%),
-          linear-gradient(180deg, #0b3536 0%, var(--bg) 42%, #092b2d 100%);
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0.18;
-        background:
-          repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 5px),
-          repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 6px);
-        mix-blend-mode: soft-light;
-      }
-
-      a {
-        color: inherit;
-      }
-
-      h1,
-      h2,
-      h3,
-      p {
-        margin: 0;
-      }
-
-      .wrap {
-        width: min(1240px, calc(100vw - 32px));
-        margin: 0 auto;
-        padding: 24px 0 56px;
-      }
-
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        margin-bottom: 24px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .mark {
-        width: 56px;
-        height: 56px;
-        border-radius: 18px;
-        background:
-          linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        display: grid;
-        place-items: center;
-        box-shadow: 0 16px 34px rgba(4, 24, 24, 0.2);
-        color: #fff8ec;
-        font-size: 26px;
-      }
-
-      .brand-copy .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(244, 229, 206, 0.08);
-        border: 1px solid rgba(244, 229, 206, 0.16);
-        color: rgba(245, 232, 212, 0.85);
-        font-size: 0.88rem;
-        letter-spacing: 0.02em;
-      }
-
-      .brand-copy .eyebrow::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--sun);
-        box-shadow: 0 0 0 4px rgba(230, 162, 100, 0.14);
-      }
-
-      .top-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 16px;
-        border-radius: 14px;
-        border: 1px solid rgba(244, 229, 206, 0.18);
-        background: rgba(244, 229, 206, 0.06);
-        color: rgba(248, 237, 220, 0.92);
-        text-decoration: none;
-        font-weight: 650;
-        letter-spacing: 0.01em;
-        backdrop-filter: blur(8px);
-      }
-
-      .top-link:hover {
-        background: rgba(244, 229, 206, 0.12);
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 20px;
-        align-items: stretch;
-        margin-bottom: 20px;
-      }
-
-      .panel {
-        border-radius: 30px;
-        background: var(--panel);
-        box-shadow: var(--shadow);
-        border: 1px solid rgba(255, 255, 255, 0.28);
-        overflow: hidden;
-      }
-
-      .hero-copy {
-        position: relative;
-        padding: 30px;
-        background:
-          linear-gradient(180deg, rgba(248, 237, 220, 0.98), rgba(239, 224, 192, 0.92));
-      }
-
-      .hero-copy::before {
-        content: "";
-        position: absolute;
-        left: -110px;
-        top: -140px;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(230, 162, 100, 0.25), transparent 66%);
-      }
-
-      .kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 18px;
-        padding: 9px 14px;
-        border-radius: 999px;
-        background: rgba(20, 48, 51, 0.06);
-        color: var(--ink-soft);
-        border: 1px solid rgba(20, 48, 51, 0.08);
-        font-size: 0.9rem;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-      }
-
-      .kicker::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--olive);
-        box-shadow: 0 0 0 5px rgba(138, 169, 111, 0.14);
-      }
-
-      h1 {
-        max-width: 8ch;
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-        font-size: clamp(3.4rem, 6vw, 6rem);
-        line-height: 0.88;
-        letter-spacing: -0.08em;
-        color: #173537;
-      }
-
-      .lede {
-        margin-top: 18px;
-        max-width: 63ch;
-        font-size: 1.08rem;
-        line-height: 1.72;
-        color: var(--ink-soft);
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 20px;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 16px;
-        border-radius: 16px;
-        text-decoration: none;
-        border: 1px solid rgba(20, 48, 51, 0.14);
-        background: rgba(255, 255, 255, 0.48);
-        color: var(--ink);
-        font-weight: 700;
-        box-shadow: 0 10px 24px rgba(4, 24, 24, 0.08);
-      }
-
-      .btn.primary {
-        background: linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
-        color: #143033;
-      }
-
-      .meta-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 24px;
-      }
-
-      .meta {
-        padding: 16px;
-        border-radius: 22px;
-        border: 1px solid rgba(20, 48, 51, 0.1);
-        background: rgba(255, 255, 255, 0.42);
-      }
-
-      .studio-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-        gap: 14px;
-        margin-top: 18px;
-      }
-
-      .trait-group {
-        display: grid;
-        gap: 12px;
-      }
-
-      .trait-group + .trait-group {
-        margin-top: 16px;
-      }
-
-      .trait-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        font-weight: 750;
-        color: var(--ink);
-      }
-
-      .trait-label span {
-        color: var(--muted);
-        font-weight: 600;
-        font-size: 0.92rem;
-      }
-
-      .choice-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .trait-choice {
-        position: relative;
-        display: grid;
-        grid-template-columns: 22px minmax(0, 1fr);
-        gap: 12px;
-        align-items: start;
-        padding: 12px 14px;
-        border-radius: 18px;
-        border: 1px solid rgba(20, 48, 51, 0.12);
-        background: rgba(255, 255, 255, 0.58);
-        cursor: pointer;
-        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-      }
-
-      .trait-choice:hover {
-        transform: translateY(-1px);
-        border-color: rgba(20, 48, 51, 0.2);
-      }
-
-      .trait-choice input {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .trait-choice .box {
-        width: 22px;
-        height: 22px;
-        margin-top: 1px;
-        border-radius: 7px;
-        border: 1.5px solid rgba(20, 48, 51, 0.2);
-        background: var(--choice-swatch, linear-gradient(180deg, #c7d7b0, #97b96d));
-        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.18);
-        position: relative;
-      }
-
-      .trait-choice .box::after {
-        content: "";
-        position: absolute;
-        inset: 4px 5px 5px 4px;
-        border-radius: 4px;
-        border: 2px solid rgba(246, 241, 228, 0.92);
-        opacity: 0;
-        transform: scale(0.8);
-        transition: opacity 180ms ease, transform 180ms ease;
-      }
-
-      .trait-choice input:checked + .box::after {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      .trait-choice input:checked ~ .trait-copy .trait-title {
-        color: var(--ink);
-      }
-
-      .trait-choice input:checked ~ .trait-copy .trait-note {
-        color: var(--ink-soft);
-      }
-
-      .trait-copy {
-        display: grid;
-        gap: 3px;
-      }
-
-      .trait-title {
-        font-weight: 750;
-        color: rgba(20, 48, 51, 0.86);
-      }
-
-      .trait-note {
-        color: var(--muted);
-        font-size: 0.86rem;
-        line-height: 1.4;
-      }
-
-      .studio-side {
-        display: grid;
-        gap: 14px;
-        align-content: start;
-      }
-
-      .studio-card {
-        padding: 18px;
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.46);
-        border: 1px solid rgba(20, 48, 51, 0.1);
-      }
-
-      .studio-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(20, 48, 51, 0.08);
-        font-weight: 700;
-      }
-
-      .studio-badge::before {
-        content: "";
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: var(--olive);
-        box-shadow: 0 0 0 4px rgba(138, 169, 111, 0.16);
-      }
-
-      .studio-card p {
-        color: var(--ink-soft);
-        line-height: 1.65;
-        font-size: 0.98rem;
-      }
-
-      .roadmap {
-        display: grid;
-        gap: 10px;
-        margin-top: 14px;
-      }
-
-      .roadmap .mini {
-        color: var(--muted);
-      }
-
-      .roadmap-pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .roadmap-pills .pill {
-        background: rgba(20, 48, 51, 0.06);
-      }
-
-      .meta strong {
-        display: block;
-        font-size: 1.24rem;
-        margin-bottom: 4px;
-      }
-
-      .mini {
-        color: var(--muted);
-        font-size: 0.92rem;
-        line-height: 1.45;
-      }
-
-      .art-panel {
-        position: relative;
-        min-height: 470px;
-        background:
-          linear-gradient(180deg, rgba(10, 58, 59, 0.12), rgba(10, 58, 59, 0.22)),
-          radial-gradient(circle at 20% 22%, var(--scene-glow), transparent 19%),
-          linear-gradient(180deg, var(--scene-top) 0%, var(--scene-bottom) 100%);
-        overflow: hidden;
-      }
-
-      .art-panel::before {
-        content: "";
-        position: absolute;
-        inset: 16px;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 248, 236, 0.08);
-        pointer-events: none;
-      }
-
-      .pond {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-      }
-
-      .pond::before {
-        content: "";
-        position: absolute;
-        inset: -8% -10% auto auto;
-        width: 38%;
-        height: 52%;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(238, 214, 185, 0.16), transparent 68%);
-      }
-
-      .lotus {
-        position: absolute;
-        left: 40px;
-        top: 36px;
-        width: 112px;
-        height: 168px;
-      }
-
-      .lotus .stem {
-        position: absolute;
-        left: 50%;
-        top: 58px;
-        translate: -50% 0;
-        width: 7px;
-        height: 118px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #6ca15f, #4f7c4e);
-      }
-
-      .lotus .flower {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        translate: -50% 0;
-        width: 112px;
-        height: 88px;
-      }
-
-      .lotus .petal {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 26px;
-        height: 56px;
-        border-radius: 999px 999px 14px 14px;
-        background: linear-gradient(180deg, #f6dad7, #eac1c0);
-        transform-origin: center bottom;
-        box-shadow: 0 8px 14px rgba(3, 18, 18, 0.12);
-      }
-
-      .lotus .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(-50deg); }
-      .lotus .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(-28deg); }
-      .lotus .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(-10deg); }
-      .lotus .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(10deg); }
-      .lotus .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(28deg); }
-      .lotus .petal:nth-child(6) { transform: translate(-50%, -100%) rotate(48deg); }
-
-      .lotus .core {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        translate: -50% -42%;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: #f0e2cc;
-        box-shadow: 0 0 0 5px rgba(240, 226, 204, 0.18);
-      }
-
-      .ripples {
-        position: absolute;
-        left: 48px;
-        top: 150px;
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        border: 2px solid rgba(206, 239, 244, 0.42);
-        border-color: rgba(206, 239, 244, 0.42) transparent transparent transparent;
-        transform: rotate(-18deg);
-      }
-
-      .ripples::before,
-      .ripples::after {
-        content: "";
-        position: absolute;
-        inset: 12px;
-        border-radius: 50%;
-        border: 2px solid rgba(206, 239, 244, 0.34);
-        border-color: rgba(206, 239, 244, 0.34) transparent transparent transparent;
-      }
-
-      .ripples::after {
-        inset: 24px;
-      }
-
-      .ring-left,
-      .ring-right {
-        position: absolute;
-        border-radius: 50%;
-        border: 2px solid rgba(206, 239, 244, 0.34);
-        border-color: rgba(206, 239, 244, 0.34) transparent transparent transparent;
-      }
-
-      .ring-left {
-        left: 28px;
-        top: 312px;
-        width: 94px;
-        height: 38px;
-        transform: rotate(-10deg);
-      }
-
-      .ring-right {
-        right: 62px;
-        top: 148px;
-        width: 118px;
-        height: 44px;
-        transform: rotate(12deg);
-      }
-
-      .pad {
-        position: absolute;
-        border-radius: 50%;
-        background: linear-gradient(180deg, #8db46f 0%, #83a95e 100%);
-        box-shadow: inset 0 -12px 0 rgba(18, 50, 36, 0.06), 0 18px 24px rgba(6, 24, 24, 0.16);
-      }
-
-      .pad.big {
-        left: 56px;
-        bottom: 84px;
-        width: 448px;
-        height: 232px;
-        transform: rotate(-4deg);
-      }
-
-      .pad.big::after {
-        content: "";
-        position: absolute;
-        right: -8px;
-        top: 28px;
-        width: 126px;
-        height: 68px;
-        background: linear-gradient(180deg, #17484a 0%, #17484a 100%);
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .pad.small-left,
-      .pad.small-right {
-        width: 172px;
-        height: 88px;
-        bottom: 38px;
-        background: linear-gradient(180deg, #adc98d, #9fbe7c);
-      }
-
-      .pad.small-left {
-        left: 18px;
-        transform: rotate(0deg);
-      }
-
-      .pad.small-left::after,
-      .pad.small-right::after {
-        content: "";
-        position: absolute;
-        right: -4px;
-        top: 40px;
-        width: 70px;
-        height: 32px;
-        background: #17484a;
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .pad.small-right {
-        right: 18px;
-        transform: rotate(0deg);
-      }
-
-      .frog {
-        position: absolute;
-        left: 184px;
-        bottom: 102px;
-        width: 258px;
-        height: 186px;
-        transform: rotate(1deg);
-      }
-
-      .frog .body {
-        position: absolute;
-        left: 60px;
-        top: 44px;
-        width: 158px;
-        height: 100px;
-        border-radius: 60px 72px 40px 48px;
-        background: linear-gradient(180deg, var(--frog-body-top) 0%, var(--frog-body-bottom) 100%);
-        box-shadow: inset -10px -12px 0 rgba(37, 76, 27, 0.06);
-      }
-
-      .frog .head {
-        position: absolute;
-        left: 26px;
-        top: 18px;
-        width: 132px;
-        height: 84px;
-        border-radius: 52px 62px 28px 34px;
-        background: linear-gradient(180deg, var(--frog-head-top) 0%, var(--frog-head-bottom) 100%);
-        box-shadow: inset -8px -6px 0 rgba(37, 76, 27, 0.05);
-      }
-
-      .frog .head::before {
-        content: "";
-        position: absolute;
-        right: -20px;
-        top: 20px;
-        width: 42px;
-        height: 28px;
-        border-radius: 0 30px 30px 0;
-        background: linear-gradient(180deg, #a6db68 0%, #92c453 100%);
-      }
-
-      .frog .head::after {
-        content: "";
-        position: absolute;
-        right: 2px;
-        top: 35px;
-        width: 7px;
-        height: 5px;
-        border-radius: 50%;
-        background: rgba(20, 48, 51, 0.58);
-        box-shadow: 12px -3px 0 rgba(20, 48, 51, 0.3);
-      }
-
-      .frog .eye {
-        position: absolute;
-        left: 74px;
-        top: 22px;
-        width: 34px;
-        height: 26px;
-        border-radius: 50%;
-        background: #efe3bc;
-        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-      }
-
-      .frog .eye::after {
-        content: "";
-        position: absolute;
-        left: 12px;
-        top: 7px;
-        width: 10px;
-        height: 9px;
-        border-radius: 50%;
-        background: #171112;
-      }
-
-      .frog .mouth {
-        position: absolute;
-        left: 44px;
-        top: 62px;
-        width: 34px;
-        height: 10px;
-        border-bottom: 2px solid rgba(20, 48, 51, 0.72);
-        border-radius: 0 0 18px 18px;
-      }
-
-      .frog .belly {
-        position: absolute;
-        left: 86px;
-        top: 68px;
-        width: 74px;
-        height: 72px;
-        border-radius: 34px 34px 30px 30px;
-        background: linear-gradient(180deg, var(--frog-belly-top) 0%, var(--frog-belly-bottom) 100%);
-        clip-path: polygon(14% 0, 84% 0, 100% 40%, 84% 100%, 18% 100%, 0 46%);
-      }
-
-      .frog .leg {
-        position: absolute;
-        background: linear-gradient(180deg, var(--frog-leg-top), var(--frog-leg-bottom));
-      }
-
-      .frog .leg.back {
-        right: 12px;
-        bottom: 16px;
-        width: 78px;
-        height: 62px;
-        border-radius: 48% 38% 46% 54%;
-        transform: rotate(-26deg);
-      }
-
-      .frog .leg.front {
-        left: 8px;
-        bottom: 34px;
-        width: 86px;
-        height: 40px;
-        border-radius: 22px 24px 20px 20px;
-        transform: rotate(12deg);
-      }
-
-      .frog .foot {
-        position: absolute;
-        width: 60px;
-        height: 16px;
-        left: 0;
-        bottom: 10px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, var(--frog-foot-top), var(--frog-foot-bottom));
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .frog .tongue {
-        position: absolute;
-        left: 18px;
-        top: 72px;
-        width: 108px;
-        height: 4px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #c88a98, #dca0aa, #e7b2bb);
-        transform: rotate(-10deg);
-        transform-origin: left center;
-      }
-
-      .fly {
-        position: absolute;
-        left: 234px;
-        top: 104px;
-        width: 42px;
-        height: 30px;
-      }
-
-      .fly::before,
-      .fly::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 20px;
-        height: 16px;
-        border-radius: 12px 12px 50% 50%;
-        background: rgba(230, 240, 241, 0.72);
-        box-shadow: inset 0 -2px 0 rgba(32, 34, 38, 0.12);
-      }
-
-      .fly::before {
-        left: 0;
-        transform: rotate(-28deg);
-      }
-
-      .fly::after {
-        right: 0;
-        transform: rotate(22deg);
-      }
-
-      .fly .body {
-        position: absolute;
-        left: 16px;
-        top: 10px;
-        width: 14px;
-        height: 12px;
-        border-radius: 50%;
-        background: #1f2023;
-      }
-
-      .fly .eye {
-        position: absolute;
-        left: 12px;
-        top: 10px;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #c17b88;
-        box-shadow: 0 0 0 4px rgba(193, 123, 136, 0.12);
-      }
-
-      .leves {
-        position: absolute;
-        right: 38px;
-        bottom: 30px;
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
-        background: linear-gradient(180deg, #8bb36f, #769d57);
-        clip-path: ellipse(40% 46% at 50% 50%);
-        box-shadow: 0 0 0 4px rgba(139, 179, 111, 0.12);
-      }
-
-      .leves::before,
-      .leves::after {
-        content: "";
-        position: absolute;
-        inset: 10px 12px 12px;
-        border-radius: 50%;
-        border: 2px solid rgba(223, 240, 242, 0.22);
-        border-color: rgba(223, 240, 242, 0.22) transparent transparent transparent;
-      }
-
-      .leves::after {
-        inset: 18px 20px 20px;
-      }
-
-      .art-board {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
-        width: 100%;
-        padding: 8px;
-        background: rgba(247, 238, 221, 0.42);
-      }
-
-      .art-tile {
-        position: relative;
-        aspect-ratio: 1;
-        overflow: hidden;
-        border-radius: 0;
-        background: linear-gradient(180deg, var(--scene-top), var(--scene-bottom));
-        box-shadow: none;
-      }
-
-      .art-tile::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 34%);
-        pointer-events: none;
-      }
-
-      .art-tile.blue { --scene-top: #2a6faa; --scene-bottom: #1f5e90; }
-      .art-tile.teal { --scene-top: #0d7972; --scene-bottom: #09615f; }
-      .art-tile.violet { --scene-top: #5c57a0; --scene-bottom: #4f4a93; }
-      .art-tile.night { --scene-top: #243a64; --scene-bottom: #132a4c; }
-      .art-tile.jade { --scene-top: #0a7364; --scene-bottom: #095b52; }
-      .art-tile.aqua { --scene-top: #07809a; --scene-bottom: #0a6884; }
-
-      .scene {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-      }
-
-      .scene::before {
-        content: "";
-        position: absolute;
-        inset: -6% -10% auto auto;
-        width: 38%;
-        height: 50%;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(238, 214, 185, 0.14), transparent 70%);
-      }
-
-      .scene-lotus {
-        position: absolute;
-        left: var(--lotus-left, 24px);
-        top: var(--lotus-top, 20px);
-        width: 76px;
-        height: 116px;
-      }
-
-      .scene-lotus .stem {
-        position: absolute;
-        left: 50%;
-        top: 34px;
-        translate: -50% 0;
-        width: 5px;
-        height: 84px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #89b46e, #5c8c56);
-      }
-
-      .scene-lotus .flower {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        translate: -50% 0;
-        width: 76px;
-        height: 58px;
-      }
-
-      .scene-lotus .petal {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 16px;
-        height: 36px;
-        border-radius: 999px 999px 12px 12px;
-        background: linear-gradient(180deg, #f8d9d7, #e9bcbc);
-        transform-origin: center bottom;
-      }
-
-      .scene-lotus .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(-48deg); }
-      .scene-lotus .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(-26deg); }
-      .scene-lotus .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(-8deg); }
-      .scene-lotus .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(8deg); }
-      .scene-lotus .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(26deg); }
-      .scene-lotus .petal:nth-child(6) { transform: translate(-50%, -100%) rotate(48deg); }
-
-      .scene-lotus .core {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        translate: -50% -42%;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #f3dfbf;
-      }
-
-      .scene-ripple {
-        position: absolute;
-        border-radius: 50%;
-        border: 2px solid rgba(214, 236, 240, 0.34);
-        border-color: rgba(214, 236, 240, 0.34) transparent transparent transparent;
-      }
-
-      .scene-ripple.left {
-        left: var(--ripple-left, 32px);
-        top: var(--ripple-top, 120px);
-        width: 34px;
-        height: 18px;
-        transform: rotate(-18deg);
-      }
-
-      .scene-ripple.left::before,
-      .scene-ripple.left::after,
-      .scene-ripple.bud::before,
-      .scene-ripple.bud::after {
-        content: "";
-        position: absolute;
-        inset: 6px;
-        border-radius: 50%;
-        border: 2px solid rgba(214, 236, 240, 0.26);
-        border-color: rgba(214, 236, 240, 0.26) transparent transparent transparent;
-      }
-
-      .scene-ripple.left::after,
-      .scene-ripple.bud::after {
-        inset: 12px;
-      }
-
-      .scene-ripple.bud {
-        right: var(--bud-ripple-right, 34px);
-        top: var(--bud-ripple-top, 164px);
-        width: 38px;
-        height: 20px;
-      }
-
-      .scene-bud {
-        position: absolute;
-        right: var(--bud-right, 38px);
-        top: var(--bud-top, 122px);
-        width: 26px;
-        height: 34px;
-        border-radius: 50% 50% 46% 46%;
-        background: linear-gradient(180deg, #f7b7be, #e69aa8);
-        box-shadow: inset -2px -4px 0 rgba(255, 255, 255, 0.18);
-      }
-
-      .scene-bud::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: -5px;
-        translate: -50% 0;
-        width: 12px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      .scene-pad {
-        position: absolute;
-        border-radius: 50%;
-        background: linear-gradient(180deg, #86b95d, #6ea246);
-        box-shadow: inset 0 -10px 0 rgba(20, 48, 51, 0.08), 0 16px 22px rgba(3, 18, 18, 0.16);
-      }
-
-      .scene-pad.main {
-        left: var(--pad-left, 18px);
-        top: var(--pad-top, 96px);
-        width: var(--pad-width, 242px);
-        height: var(--pad-height, 132px);
-        transform: rotate(var(--pad-rotate, 2deg));
-      }
-
-      .scene-pad.main::before {
-        content: "";
-        position: absolute;
-        right: -2px;
-        top: 26px;
-        width: 58px;
-        height: 24px;
-        background: inherit;
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .scene-pad.small-left,
-      .scene-pad.small-right {
-        width: 126px;
-        height: 64px;
-      }
-
-      .scene-pad.small-left {
-        left: 12px;
-        bottom: 20px;
-        transform: rotate(-2deg);
-      }
-
-      .scene-pad.small-left::before,
-      .scene-pad.small-right::before {
-        content: "";
-        position: absolute;
-        right: -2px;
-        top: 22px;
-        width: 42px;
-        height: 18px;
-        background: inherit;
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .scene-pad.small-right {
-        right: 12px;
-        bottom: 16px;
-        transform: rotate(2deg);
-      }
-
-      .scene-frog {
-        position: absolute;
-        left: var(--frog-left, 126px);
-        top: var(--frog-top, 72px);
-        width: 128px;
-        height: 118px;
-      }
-
-      .scene-frog .body {
-        position: absolute;
-        left: 34px;
-        top: 10px;
-        width: 84px;
-        height: 86px;
-        border-radius: 54px 50px 32px 38px;
-        background: linear-gradient(180deg, #8fd04e, #74b13d);
-        box-shadow: inset -8px -10px 0 rgba(22, 61, 25, 0.08);
-      }
-
-      .scene-frog .head {
-        position: absolute;
-        left: 10px;
-        top: 4px;
-        width: 82px;
-        height: 70px;
-        border-radius: 50px 52px 30px 34px;
-        background: linear-gradient(180deg, #98d857, #7dbb40);
-      }
-
-      .scene-frog .head::before {
-        content: "";
-        position: absolute;
-        right: -14px;
-        top: 16px;
-        width: 32px;
-        height: 24px;
-        border-radius: 0 26px 26px 0;
-        background: linear-gradient(180deg, #98d857, #7dbb40);
-      }
-
-      .scene-frog .eye {
-        position: absolute;
-        left: 48px;
-        top: 18px;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: #f3de9d;
-        box-shadow: inset 0 0 0 1px rgba(15, 19, 17, 0.08);
-      }
-
-      .scene-frog .eye::after {
-        content: "";
-        position: absolute;
-        left: 10px;
-        top: 7px;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: #191615;
-      }
-
-      .scene-frog .mouth {
-        position: absolute;
-        left: 18px;
-        top: 46px;
-        width: 28px;
-        height: 10px;
-        border-bottom: 2px solid rgba(20, 48, 51, 0.72);
-        border-radius: 0 0 18px 18px;
-      }
-
-      .scene-frog .tongue {
-        position: absolute;
-        left: -2px;
-        top: 46px;
-        width: 74px;
-        height: 6px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #d58e9c, #ebb0ba, #f2c3c8);
-        transform: rotate(-15deg);
-        transform-origin: left center;
-      }
-
-      .scene-frog .belly {
-        position: absolute;
-        left: 42px;
-        top: 34px;
-        width: 58px;
-        height: 72px;
-        border-radius: 30px 30px 26px 26px;
-        background: linear-gradient(180deg, #f4ecd9, #fff8ea);
-        clip-path: polygon(14% 0, 84% 0, 100% 38%, 82% 100%, 18% 100%, 0 44%);
-      }
-
-      .scene-frog .leg {
-        position: absolute;
-        background: linear-gradient(180deg, #7bb244, #689939);
-      }
-
-      .scene-frog .leg.back {
-        right: 2px;
-        bottom: 6px;
-        width: 58px;
-        height: 52px;
-        border-radius: 48% 38% 46% 54%;
-        transform: rotate(-24deg);
-      }
-
-      .scene-frog .leg.front {
-        left: 12px;
-        bottom: 20px;
-        width: 58px;
-        height: 30px;
-        border-radius: 22px 24px 20px 20px;
-        transform: rotate(14deg);
-      }
-
-      .scene-frog .foot {
-        position: absolute;
-        left: -4px;
-        bottom: 7px;
-        width: 42px;
-        height: 14px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #689939, #5e8732);
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-
-      .scene-crown {
-        position: absolute;
-        left: 66px;
-        top: -6px;
-        width: 34px;
-        height: 28px;
-        background: linear-gradient(180deg, #f5ca51, #ecb935);
-        clip-path: polygon(0 100%, 12% 22%, 28% 46%, 50% 0, 72% 46%, 88% 22%, 100% 100%);
-        filter: drop-shadow(0 4px 0 rgba(20, 48, 51, 0.08));
-      }
-
-      .scene-coins {
-        position: absolute;
-        left: var(--coins-left, 46px);
-        top: var(--coins-top, 166px);
-        width: 94px;
-        height: 56px;
-      }
-
-      .scene-coin {
-        position: absolute;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: linear-gradient(180deg, #ffd86a, #d7a52d);
-        box-shadow: inset 0 0 0 2px rgba(251, 235, 164, 0.45), 0 4px 6px rgba(3, 18, 18, 0.12);
-      }
-
-      .scene-coin::before {
-        content: "";
-        position: absolute;
-        inset: 5px;
-        border-radius: 50%;
-        border: 1px solid rgba(107, 75, 15, 0.25);
-      }
-
-      .scene-coin.c1 { left: 0; bottom: 2px; }
-      .scene-coin.c2 { left: 16px; bottom: 16px; }
-      .scene-coin.c3 { left: 32px; bottom: 6px; }
-      .scene-coin.c4 { left: 48px; bottom: 18px; }
-      .scene-coin.c5 { left: 64px; bottom: 8px; }
-      .scene-coin.c6 { left: 10px; bottom: 28px; }
-
-      .scene-fly {
-        position: absolute;
-        left: var(--fly-left, 102px);
-        top: var(--fly-top, 96px);
-        width: 30px;
-        height: 24px;
-      }
-
-      .scene-fly::before,
-      .scene-fly::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 16px;
-        height: 12px;
-        border-radius: 12px 12px 50% 50%;
-        background: rgba(230, 240, 241, 0.76);
-        box-shadow: inset 0 -2px 0 rgba(32, 34, 38, 0.12);
-      }
-
-      .scene-fly::before { left: 0; transform: rotate(-26deg); }
-      .scene-fly::after { right: 0; transform: rotate(22deg); }
-
-      .scene-fly .body {
-        position: absolute;
-        left: 10px;
-        top: 8px;
-        width: 10px;
-        height: 9px;
-        border-radius: 50%;
-        background: #15171a;
-      }
-
-      .scene-fly .eye {
-        position: absolute;
-        left: 8px;
-        top: 8px;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #d36f8a;
-      }
-
-      .scene-moon {
-        position: absolute;
-        right: var(--moon-right, 28px);
-        top: var(--moon-top, 18px);
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        background: #f7e4a6;
-        clip-path: ellipse(40% 40% at 50% 50%);
-      }
-
-      .scene-star {
-        position: absolute;
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background: rgba(255, 243, 214, 0.9);
-      }
-
-      .scene-star.one { left: 22px; top: 36px; }
-      .scene-star.two { left: 68px; top: 26px; }
-      .scene-star.three { right: 62px; top: 44px; }
-
-      .section {
-        margin-top: 20px;
-        padding: 24px;
-      }
-
-      .section h2 {
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-        font-size: 1.7rem;
-        letter-spacing: -0.04em;
-        margin-bottom: 8px;
-      }
-
-      .sub {
-        color: var(--muted);
-        line-height: 1.68;
-        margin-bottom: 14px;
-        max-width: 70ch;
-      }
-
-      .toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-bottom: 16px;
-      }
-
-      .copy-btn {
-        border: 0;
-        border-radius: 14px;
-        padding: 12px 16px;
-        background: linear-gradient(135deg, rgba(230, 162, 100, 1), rgba(170, 193, 139, 1));
-        color: #173537;
-        font-weight: 800;
-        cursor: pointer;
-        box-shadow: 0 14px 24px rgba(4, 24, 24, 0.14);
-      }
-
-      .copy-btn:hover {
-        filter: brightness(1.02);
-      }
-
-      pre {
-        margin: 0;
-        padding: 22px;
-        overflow: auto;
-        white-space: pre-wrap;
-        line-height: 1.62;
-        font-size: 0.96rem;
-        border-radius: 22px;
-        color: #163335;
-        background: var(--panel-strong);
-        border: 1px solid rgba(20, 48, 51, 0.1);
-      }
-
-      .grid-2 {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 16px;
-      }
-
-      .card {
-        padding: 18px;
-        border-radius: 22px;
-        background: rgba(248, 237, 220, 0.78);
-        border: 1px solid rgba(20, 48, 51, 0.1);
-      }
-
-      .card h3 {
-        margin-bottom: 8px;
-        font-size: 1.08rem;
-      }
-
-      .card p {
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 10px;
-      }
-
-      .pill {
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.5);
-        border: 1px solid rgba(20, 48, 51, 0.1);
-        font-size: 0.9rem;
-      }
-
-      .pill a {
-        text-decoration: none;
-      }
-
-      footer {
-        padding: 16px 4px 0;
-        color: rgba(244, 229, 206, 0.8);
-        font-size: 0.94rem;
-        line-height: 1.6;
-      }
-
-      .footer-note {
-        opacity: 0.9;
-      }
-
-      @media (max-width: 980px) {
-        .hero,
-        .grid-2,
-        .meta-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .art-panel {
-          min-height: 410px;
-        }
-
-        .art-board {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      @media (max-width: 640px) {
-        .wrap {
-          width: min(100vw - 18px, 1240px);
-          padding-top: 12px;
-        }
-
-        .topbar {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .hero-copy,
-        .section {
-          padding: 18px;
-        }
-
-        .art-panel {
-          min-height: 360px;
-        }
-
-        .art-board {
-          grid-template-columns: 1fr;
-        }
-
-        h1 {
-          font-size: clamp(2.8rem, 16vw, 4rem);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <header class="topbar">
-        <div class="brand">
-          <div class="mark">◔</div>
-          <div class="brand-copy">
-            <div class="eyebrow">Frogies · Bitcoin block-data rarity · nat.fun</div>
-          </div>
-        </div>
-        <a class="top-link" href="https://nat.fun" target="_blank" rel="noreferrer">nat.fun</a>
-      </header>
-
-      <main class="hero">
-        <section class="panel hero-copy">
-          <div class="kicker">Mid-century modern / flat vector / artsy pond energy</div>
-          <h1>Frogies</h1>
-          <p class="lede">
-            Frogies is a pond-first Bitcoin collection with a single expressive frog, calm lo-fi color, and a trait system
-            that can grow into little scene details like lotus blooms, reeds, coins, weather, and other quiet swamp extras.
-          </p>
-          <div class="cta-row">
-            <a class="btn primary" href="#traits">Copy trait sheet</a>
-            <a class="btn" href="#pocs">Art directions</a>
-          </div>
-          <div class="meta-grid">
-            <div class="meta">
-              <strong>8,064</strong>
-              <div class="mini">total supply target</div>
-            </div>
-            <div class="meta">
-              <strong>Bitcoin</strong>
-              <div class="mini">block data decides rarity</div>
-            </div>
-            <div class="meta">
-              <strong>Art-led</strong>
-              <div class="mini">poster first, character second</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel art-panel" aria-label="Frogies hero illustration">
-          <div class="pond">
-            <div class="ripples"></div>
-            <div class="ring-left"></div>
-            <div class="ring-right"></div>
-            <div class="pad small-left"></div>
-            <div class="pad small-right"></div>
-            <div class="pad big"></div>
-            <div class="frog" role="img" aria-label="A stylized frog sitting on a lily pad and reaching toward a fly">
-              <div class="body"></div>
-              <div class="head"></div>
-              <div class="eye"></div>
-              <div class="mouth"></div>
-              <div class="belly"></div>
-              <div class="leg front"></div>
-              <div class="leg back"></div>
-              <div class="foot"></div>
-              <div class="tongue"></div>
-            </div>
-            <div class="fly">
-              <div class="eye"></div>
-              <div class="body"></div>
-            </div>
-            <div class="leves"></div>
-          </div>
-        </section>
-      </main>
-
-      <section class="panel section" id="studio">
-        <div class="toolbar">
-          <div>
-            <h2>Example version</h2>
-            <p class="sub">
-              This is the first live base version. Pick a frog color and background to see how the same pond scene can branch into traits later.
-            </p>
-          </div>
-          <div class="studio-badge" id="studioSummary">Sage frog · Editorial pond</div>
-        </div>
-
-        <div class="studio-grid">
-          <div>
-            <div class="trait-group">
-              <div class="trait-label">Body color <span>start here</span></div>
-              <div class="choice-grid" data-group="body">
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #b8df71, #87bb44);">
-                  <input type="radio" name="bodyColor" value="sage" checked />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Sage</span>
-                    <span class="trait-note">calm default, closest to the current base</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #c9ee82, #9ac95a);">
-                  <input type="radio" name="bodyColor" value="mint" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Mint</span>
-                    <span class="trait-note">lighter, softer, more kawaii without going plush</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #a9cf73, #779f45);">
-                  <input type="radio" name="bodyColor" value="olive" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Olive</span>
-                    <span class="trait-note">deeper pond green for a moodier base</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #e2b5c8, #c982a1);">
-                  <input type="radio" name="bodyColor" value="blush" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Blush</span>
-                    <span class="trait-note">a rare pastel outlier for special drops</span>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="trait-group">
-              <div class="trait-label">Background <span>second layer</span></div>
-              <div class="choice-grid" data-group="scene">
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #0f4a4b, #17484a);">
-                  <input type="radio" name="sceneColor" value="editorial" checked />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Editorial pond</span>
-                    <span class="trait-note">the strongest candidate for the core identity</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #c8d7b7, #92b46d);">
-                  <input type="radio" name="sceneColor" value="dawn" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Dawn marsh</span>
-                    <span class="trait-note">soft warm light with a brighter, fresher mood</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #243a64, #132a4c);">
-                  <input type="radio" name="sceneColor" value="moonlit" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Moonlit swamp</span>
-                    <span class="trait-note">darker, calmer, and more premium feeling</span>
-                  </span>
-                </label>
-                <label class="trait-choice" style="--choice-swatch: linear-gradient(180deg, #0e7c8f, #0a5f73);">
-                  <input type="radio" name="sceneColor" value="aqua" />
-                  <span class="box"></span>
-                  <span class="trait-copy">
-                    <span class="trait-title">Aqua glow</span>
-                    <span class="trait-note">cooler water tone for a more graphic look</span>
-                  </span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="studio-side">
-            <div class="studio-card">
-              <p>
-                This is the first example version, not the final trait matrix. The plan is to lock the base feel here, then add eyes, mouth, head gear, swamp accessories, and finally more scene logic.
-              </p>
-              <div class="roadmap">
-                <div class="mini">Next trait buckets</div>
-                <div class="roadmap-pills">
-                  <span class="pill">eyes</span>
-                  <span class="pill">mouth / expression</span>
-                  <span class="pill">head gear</span>
-                  <span class="pill">swamp accessories</span>
-                  <span class="pill">background details</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="studio-card">
-              <p>
-                The live illustration above should respond to your choices so we can judge the base art before the rest of the collection is expanded.
-              </p>
-              <div class="roadmap" style="margin-top: 12px;">
-                <div class="mini">What we’re testing</div>
-                <div class="roadmap-pills">
-                  <span class="pill">body color</span>
-                  <span class="pill">background</span>
-                  <span class="pill">single hero scene</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel section" id="traits">
-        <div class="toolbar">
-          <div>
-            <h2>Copy / paste trait sheet</h2>
-            <p class="sub">
-              Frogies is being shaped as a calm, art-first pond collection: one frog, one scene, and a trait system that can expand cleanly into small visual details.
-            </p>
-          </div>
-          <button class="copy-btn" id="copyBtn">Copy traits</button>
-        </div>
-        <pre id="traitsBlock">FROGIES TRAITS (draft counts)
-
-SUPPLY
-- 8,064 total
-
-BODY COLOR
-- swamp green — 2016
-- pastel green — 1600
-- deep teal — 1120
-- pastel blue — 896
-- pastel pink — 800
-- lilac — 640
-- toxic yellow — 384
-- night black — 320
-- albino white — 192
-- gold body — 64
-- diamond body — 32
-
-EYES
-- wide sleepy — 2944
-- one-eye wink — 1600
-- crossed — 1216
-- bulging — 896
-- hypnotic spiral — 512
-- gold eyes — 704
-- laser eyes — 192
-
-MOUTH / EXPRESSION
-- grin — 2432
-- croak — 1920
-- smirk — 1280
-- deadpan — 1024
-- smug — 640
-- shocked — 512
-- chewing bug — 256
-
-HEADGEAR / PROPS
-- leaf cap — 2304
-- ribbit hoodie — 1536
-- bandana — 1152
-- goggles — 1024
-- miner helmet — 768
-- wizard hat — 640
-- pirate hat — 512
-- crown — 128
-
-SWAMP ACCESSORIES
-- lily pad — 2560
-- fly — 1536
-- bubble — 1152
-- mushrooms — 1024
-- lightning bug — 768
-- bones — 640
-- fishing hook — 256
-- coin stack — 128
-
-BACKGROUND / AURA
-- murky pond — 2560
-- moonlit swamp — 1536
-- sunrise marsh — 1280
-- rainy night — 1024
-- toxic mist — 768
-- Bitcoin orange glow — 640
-- neon vapor — 256
-
-NOTES
-- Frogies is a calm pond collection with a single hero frog per NFT
-- Bitcoin block data still drives the reveal, but the art direction stays Frogies-first
-- Traits should feel like clean, readable scene pieces rather than noisy add-ons
-- Lotus blooms, reeds, petals, and extra pond shapes can be treated as future overlay traits
-- Keep the whole collection cute, quiet, and a little strange in a good way</pre>
-      </section>
-
-      <section class="panel section" id="pocs">
-        <h2>Art directions</h2>
-        <p class="sub">
-          The main direction now leans mid-century modern and editorial. The older studies are still in the repo, but the homepage is framed around the new art-first look.
-        </p>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Editorial Pond</h3>
-            <p>
-              The strongest candidate for the collection identity: flat vector, calm palette, and a composed pond scene with a vintage poster feel.
-            </p>
-            <div class="pill-row">
-              <span class="pill"><a href="./editorial-pond/">Open demo</a></span>
-              <span class="pill">flat vector</span>
-              <span class="pill">mid-century composition</span>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Pastel Pond</h3>
-            <p>
-              A softer study that keeps the frog readable, but it is now treated more like a legacy sketch than the main identity.
-            </p>
-            <div class="pill-row">
-              <span class="pill"><a href="./pastel-pond/">Open demo</a></span>
-              <span class="pill">soft palette</span>
-              <span class="pill">legacy study</span>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Night Pond</h3>
-            <p>
-              A darker take for special moods and rarer variants. Good for metallic or high-contrast treatments without bringing back the cute character energy.
-            </p>
-            <div class="pill-row">
-              <span class="pill"><a href="./kawaii-night/">Open demo</a></span>
-              <span class="pill">night mode</span>
-              <span class="pill">rare-tier tone</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel section">
-        <h2>Process notes</h2>
-        <p class="sub">
-          Frogies keeps the reveal logic simple: Bitcoin block data still decides the outcome, but the homepage is framed as a pond art project first.
-        </p>
-        <div class="pill-row">
-          <span class="pill">Bitcoin block data</span>
-          <span class="pill">single hero frog</span>
-          <span class="pill">pond overlays</span>
-          <span class="pill">mid-century modern</span>
-          <span class="pill">8,064 supply</span>
-          <span class="pill">launch page later</span>
-        </div>
-      </section>
-
-      <footer>
-        <div class="footer-note">
-          Built for Frogies. Next pass can refine the hero illustration further or turn this into a proper launch page once the collection direction is locked.
-        </div>
-      </footer>
-    </div>
-
-    <script>
-      const copyBtn = document.getElementById('copyBtn');
-      const traitsBlock = document.getElementById('traitsBlock');
-      const artPanel = document.querySelector('.art-panel');
-      const studioSummary = document.getElementById('studioSummary');
-      const traitInputs = document.querySelectorAll('input[name="bodyColor"], input[name="sceneColor"]');
-
-      const palettes = {
-        body: {
-          sage: {
-            label: 'Sage frog',
-            vars: {
-              '--frog-body-top': '#b0de6a',
-              '--frog-body-bottom': '#84b943',
-              '--frog-head-top': '#bcdf78',
-              '--frog-head-bottom': '#91c84f',
-              '--frog-belly-top': '#f1e6cd',
-              '--frog-belly-bottom': '#fff7ea',
-              '--frog-leg-top': '#9bc95d',
-              '--frog-leg-bottom': '#7ea543',
-              '--frog-foot-top': '#809f45',
-              '--frog-foot-bottom': '#6e9238'
-            }
-          },
-          mint: {
-            label: 'Mint frog',
-            vars: {
-              '--frog-body-top': '#c6ee86',
-              '--frog-body-bottom': '#97ca59',
-              '--frog-head-top': '#d3f09a',
-              '--frog-head-bottom': '#a9d96d',
-              '--frog-belly-top': '#f7efda',
-              '--frog-belly-bottom': '#fffaf0',
-              '--frog-leg-top': '#afd76f',
-              '--frog-leg-bottom': '#90bb4f',
-              '--frog-foot-top': '#97b655',
-              '--frog-foot-bottom': '#7f9f42'
-            }
-          },
-          olive: {
-            label: 'Olive frog',
-            vars: {
-              '--frog-body-top': '#b2d177',
-              '--frog-body-bottom': '#7ca447',
-              '--frog-head-top': '#bed77c',
-              '--frog-head-bottom': '#96be51',
-              '--frog-belly-top': '#efe5c9',
-              '--frog-belly-bottom': '#fff8e6',
-              '--frog-leg-top': '#8fb65c',
-              '--frog-leg-bottom': '#729944',
-              '--frog-foot-top': '#789644',
-              '--frog-foot-bottom': '#627f35'
-            }
-          },
-          blush: {
-            label: 'Blush frog',
-            vars: {
-              '--frog-body-top': '#e6bbcf',
-              '--frog-body-bottom': '#cc84a6',
-              '--frog-head-top': '#edc9da',
-              '--frog-head-bottom': '#d79aba',
-              '--frog-belly-top': '#f7ebee',
-              '--frog-belly-bottom': '#fff7f8',
-              '--frog-leg-top': '#d59ab1',
-              '--frog-leg-bottom': '#bf7694',
-              '--frog-foot-top': '#b86f8c',
-              '--frog-foot-bottom': '#9d5575'
-            }
-          }
-        },
-        scene: {
-          editorial: {
-            label: 'Editorial pond',
-            vars: {
-              '--scene-top': '#0f4a4b',
-              '--scene-bottom': '#17484a',
-              '--scene-glow': 'rgba(231, 175, 143, 0.18)'
-            }
-          },
-          dawn: {
-            label: 'Dawn marsh',
-            vars: {
-              '--scene-top': '#c8d7b7',
-              '--scene-bottom': '#92b46d',
-              '--scene-glow': 'rgba(255, 236, 192, 0.2)'
-            }
-          },
-          moonlit: {
-            label: 'Moonlit swamp',
-            vars: {
-              '--scene-top': '#243a64',
-              '--scene-bottom': '#132a4c',
-              '--scene-glow': 'rgba(238, 223, 185, 0.16)'
-            }
-          },
-          aqua: {
-            label: 'Aqua glow',
-            vars: {
-              '--scene-top': '#0e7c8f',
-              '--scene-bottom': '#0a5f73',
-              '--scene-glow': 'rgba(184, 240, 242, 0.16)'
-            }
-          }
-        }
-      };
-
-      function applyTraits() {
-        const bodyChoice = document.querySelector('input[name="bodyColor"]:checked')?.value || 'sage';
-        const sceneChoice = document.querySelector('input[name="sceneColor"]:checked')?.value || 'editorial';
-        const body = palettes.body[bodyChoice];
-        const scene = palettes.scene[sceneChoice];
-
-        Object.entries({ ...body.vars, ...scene.vars }).forEach(([key, value]) => {
-          artPanel.style.setProperty(key, value);
-        });
-
-        studioSummary.textContent = `${body.label} · ${scene.label}`;
-      }
-
-      traitInputs.forEach((input) => input.addEventListener('change', applyTraits));
-
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(traitsBlock.innerText);
-          const old = copyBtn.textContent;
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => (copyBtn.textContent = old), 1400);
-        } catch (err) {
-          const range = document.createRange();
-          range.selectNodeContents(traitsBlock);
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          document.execCommand('copy');
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => (copyBtn.textContent = 'Copy traits'), 1400);
-        }
-      });
-
-      applyTraits();
-    </script>
-  </body>
-</html>
+     1|<!doctype html>
+     2|<html lang="en">
+     3|  <head>
+     4|    <meta charset="utf-8" />
+     5|    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     6|    <title>Froggies — an art frog collection on Bitcoin</title>
+     7|    <meta
+     8|      name="description"
+     9|      content="Froggies is an art-forward Bitcoin frog collection concept for nat.fun, built around deterministic block-data rarity and a mid-century modern visual language."
+    10|    />
+    11|    <style>
+    12|      :root {
+    13|        --bg: #0f3f40;
+    14|        --bg-2: #143f3f;
+    15|        --panel: rgba(244, 229, 206, 0.94);
+    16|        --panel-strong: rgba(248, 237, 220, 0.98);
+    17|        --ink: #143033;
+    18|        --ink-soft: #4c5d58;
+    19|        --muted: #62706d;
+    20|        --line: rgba(20, 48, 51, 0.12);
+    21|        --olive: #8aa96f;
+    22|        --sage: #a6c18b;
+    23|        --sun: #e6a264;
+    24|        --rose: #dd8f8f;
+    25|        --sand: #efe0c0;
+    26|        --gold: #cb9d48;
+    27|        --shadow: 0 24px 60px rgba(4, 24, 24, 0.3);
+    28|        --scene-top: #0f4a4b;
+    29|        --scene-bottom: #17484a;
+    30|        --scene-glow: rgba(231, 175, 143, 0.18);
+    31|        --frog-body-top: #9cd35b;
+    32|        --frog-body-bottom: #86bb46;
+    33|        --frog-head-top: #a6db68;
+    34|        --frog-head-bottom: #92c453;
+    35|        --frog-belly-top: #f1e6cd;
+    36|        --frog-belly-bottom: #fff7e8;
+    37|        --frog-leg-top: #8fc451;
+    38|        --frog-leg-bottom: #7da842;
+    39|        --frog-foot-top: #7da842;
+    40|        --frog-foot-bottom: #71993d;
+    41|      }
+    42|
+    43|      * {
+    44|        box-sizing: border-box;
+    45|      }
+    46|
+    47|      html {
+    48|        scroll-behavior: smooth;
+    49|      }
+    50|
+    51|      body {
+    52|        margin: 0;
+    53|        min-height: 100vh;
+    54|        color: var(--ink);
+    55|        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    56|        background:
+    57|          radial-gradient(circle at 12% 14%, rgba(238, 202, 166, 0.18), transparent 18%),
+    58|          radial-gradient(circle at 82% 12%, rgba(181, 206, 153, 0.16), transparent 19%),
+    59|          radial-gradient(circle at 72% 86%, rgba(233, 165, 123, 0.12), transparent 20%),
+    60|          linear-gradient(180deg, #0b3536 0%, var(--bg) 42%, #092b2d 100%);
+    61|      }
+    62|
+    63|      body::before {
+    64|        content: "";
+    65|        position: fixed;
+    66|        inset: 0;
+    67|        pointer-events: none;
+    68|        opacity: 0.18;
+    69|        background:
+    70|          repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 5px),
+    71|          repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 6px);
+    72|        mix-blend-mode: soft-light;
+    73|      }
+    74|
+    75|      a {
+    76|        color: inherit;
+    77|      }
+    78|
+    79|      h1,
+    80|      h2,
+    81|      h3,
+    82|      p {
+    83|        margin: 0;
+    84|      }
+    85|
+    86|      .wrap {
+    87|        width: min(1240px, calc(100vw - 32px));
+    88|        margin: 0 auto;
+    89|        padding: 24px 0 56px;
+    90|      }
+    91|
+    92|      .topbar {
+    93|        display: flex;
+    94|        align-items: center;
+    95|        justify-content: space-between;
+    96|        gap: 14px;
+    97|        margin-bottom: 24px;
+    98|      }
+    99|
+   100|      .brand {
+   101|        display: flex;
+   102|        align-items: center;
+   103|        gap: 14px;
+   104|      }
+   105|
+   106|      .mark {
+   107|        width: 56px;
+   108|        height: 56px;
+   109|        border-radius: 18px;
+   110|        background:
+   111|          linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
+   112|        border: 1px solid rgba(255, 255, 255, 0.18);
+   113|        display: grid;
+   114|        place-items: center;
+   115|        box-shadow: 0 16px 34px rgba(4, 24, 24, 0.2);
+   116|        color: #fff8ec;
+   117|        font-size: 26px;
+   118|      }
+   119|
+   120|      .brand-copy .eyebrow {
+   121|        display: inline-flex;
+   122|        align-items: center;
+   123|        gap: 8px;
+   124|        padding: 8px 12px;
+   125|        border-radius: 999px;
+   126|        background: rgba(244, 229, 206, 0.08);
+   127|        border: 1px solid rgba(244, 229, 206, 0.16);
+   128|        color: rgba(245, 232, 212, 0.85);
+   129|        font-size: 0.88rem;
+   130|        letter-spacing: 0.02em;
+   131|      }
+   132|
+   133|      .brand-copy .eyebrow::before {
+   134|        content: "";
+   135|        width: 8px;
+   136|        height: 8px;
+   137|        border-radius: 50%;
+   138|        background: var(--sun);
+   139|        box-shadow: 0 0 0 4px rgba(230, 162, 100, 0.14);
+   140|      }
+   141|
+   142|      .top-link {
+   143|        display: inline-flex;
+   144|        align-items: center;
+   145|        gap: 8px;
+   146|        padding: 12px 16px;
+   147|        border-radius: 14px;
+   148|        border: 1px solid rgba(244, 229, 206, 0.18);
+   149|        background: rgba(244, 229, 206, 0.06);
+   150|        color: rgba(248, 237, 220, 0.92);
+   151|        text-decoration: none;
+   152|        font-weight: 650;
+   153|        letter-spacing: 0.01em;
+   154|        backdrop-filter: blur(8px);
+   155|      }
+   156|
+   157|      .top-link:hover {
+   158|        background: rgba(244, 229, 206, 0.12);
+   159|      }
+   160|
+   161|      .hero {
+   162|        display: grid;
+   163|        grid-template-columns: 1.05fr 0.95fr;
+   164|        gap: 20px;
+   165|        align-items: stretch;
+   166|        margin-bottom: 20px;
+   167|      }
+   168|
+   169|      .panel {
+   170|        border-radius: 30px;
+   171|        background: var(--panel);
+   172|        box-shadow: var(--shadow);
+   173|        border: 1px solid rgba(255, 255, 255, 0.28);
+   174|        overflow: hidden;
+   175|      }
+   176|
+   177|      .hero-copy {
+   178|        position: relative;
+   179|        padding: 30px;
+   180|        background:
+   181|          linear-gradient(180deg, rgba(248, 237, 220, 0.98), rgba(239, 224, 192, 0.92));
+   182|      }
+   183|
+   184|      .hero-copy::before {
+   185|        content: "";
+   186|        position: absolute;
+   187|        left: -110px;
+   188|        top: -140px;
+   189|        width: 300px;
+   190|        height: 300px;
+   191|        border-radius: 50%;
+   192|        background: radial-gradient(circle, rgba(230, 162, 100, 0.25), transparent 66%);
+   193|      }
+   194|
+   195|      .kicker {
+   196|        display: inline-flex;
+   197|        align-items: center;
+   198|        gap: 10px;
+   199|        margin-bottom: 18px;
+   200|        padding: 9px 14px;
+   201|        border-radius: 999px;
+   202|        background: rgba(20, 48, 51, 0.06);
+   203|        color: var(--ink-soft);
+   204|        border: 1px solid rgba(20, 48, 51, 0.08);
+   205|        font-size: 0.9rem;
+   206|        letter-spacing: 0.03em;
+   207|        text-transform: uppercase;
+   208|      }
+   209|
+   210|      .kicker::before {
+   211|        content: "";
+   212|        width: 10px;
+   213|        height: 10px;
+   214|        border-radius: 50%;
+   215|        background: var(--olive);
+   216|        box-shadow: 0 0 0 5px rgba(138, 169, 111, 0.14);
+   217|      }
+   218|
+   219|      h1 {
+   220|        max-width: 8ch;
+   221|        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+   222|        font-size: clamp(3.4rem, 6vw, 6rem);
+   223|        line-height: 0.88;
+   224|        letter-spacing: -0.08em;
+   225|        color: #173537;
+   226|      }
+   227|
+   228|      .lede {
+   229|        margin-top: 18px;
+   230|        max-width: 63ch;
+   231|        font-size: 1.08rem;
+   232|        line-height: 1.72;
+   233|        color: var(--ink-soft);
+   234|      }
+   235|
+   236|      .cta-row {
+   237|        display: flex;
+   238|        flex-wrap: wrap;
+   239|        gap: 10px;
+   240|        margin-top: 20px;
+   241|      }
+   242|
+   243|      .btn {
+   244|        display: inline-flex;
+   245|        align-items: center;
+   246|        gap: 10px;
+   247|        padding: 12px 16px;
+   248|        border-radius: 16px;
+   249|        text-decoration: none;
+   250|        border: 1px solid rgba(20, 48, 51, 0.14);
+   251|        background: rgba(255, 255, 255, 0.48);
+   252|        color: var(--ink);
+   253|        font-weight: 700;
+   254|        box-shadow: 0 10px 24px rgba(4, 24, 24, 0.08);
+   255|      }
+   256|
+   257|      .btn.primary {
+   258|        background: linear-gradient(135deg, rgba(230, 162, 100, 0.95), rgba(170, 193, 139, 0.95));
+   259|        color: #143033;
+   260|      }
+   261|
+   262|      .meta-grid {
+   263|        display: grid;
+   264|        grid-template-columns: repeat(3, minmax(0, 1fr));
+   265|        gap: 12px;
+   266|        margin-top: 24px;
+   267|      }
+   268|
+   269|      .meta {
+   270|        padding: 16px;
+   271|        border-radius: 22px;
+   272|        border: 1px solid rgba(20, 48, 51, 0.1);
+   273|        background: rgba(255, 255, 255, 0.42);
+   274|      }
+   275|
+   276|      .studio-grid {
+   277|        display: grid;
+   278|        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+   279|        gap: 14px;
+   280|        margin-top: 18px;
+   281|      }
+   282|
+   283|      .trait-group {
+   284|        display: grid;
+   285|        gap: 12px;
+   286|      }
+   287|
+   288|      .trait-group + .trait-group {
+   289|        margin-top: 16px;
+   290|      }
+   291|
+   292|      .trait-label {
+   293|        display: flex;
+   294|        align-items: center;
+   295|        justify-content: space-between;
+   296|        gap: 12px;
+   297|        font-weight: 750;
+   298|        color: var(--ink);
+   299|      }
+   300|
+   301|      .trait-label span {
+   302|        color: var(--muted);
+   303|        font-weight: 600;
+   304|        font-size: 0.92rem;
+   305|      }
+   306|
+   307|      .choice-grid {
+   308|        display: grid;
+   309|        grid-template-columns: repeat(2, minmax(0, 1fr));
+   310|        gap: 10px;
+   311|      }
+   312|
+   313|      .trait-choice {
+   314|        position: relative;
+   315|        display: grid;
+   316|        grid-template-columns: 22px minmax(0, 1fr);
+   317|        gap: 12px;
+   318|        align-items: start;
+   319|        padding: 12px 14px;
+   320|        border-radius: 18px;
+   321|        border: 1px solid rgba(20, 48, 51, 0.12);
+   322|        background: rgba(255, 255, 255, 0.58);
+   323|        cursor: pointer;
+   324|        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+   325|      }
+   326|
+   327|      .trait-choice:hover {
+   328|        transform: translateY(-1px);
+   329|        border-color: rgba(20, 48, 51, 0.2);
+   330|      }
+   331|
+   332|      .trait-choice input {
+   333|        position: absolute;
+   334|        opacity: 0;
+   335|        pointer-events: none;
+   336|      }
+   337|
+   338|      .trait-choice .box {
+   339|        width: 22px;
+   340|        height: 22px;
+   341|        margin-top: 1px;
+   342|        border-radius: 7px;
+   343|        border: 1.5px solid rgba(20, 48, 51, 0.2);
+   344|        background: var(--choice-swatch, linear-gradient(180deg, #c7d7b0, #97b96d));
+   345|        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.18);
+   346|        position: relative;
+   347|      }
+   348|
+   349|      .trait-choice .box::after {
+   350|        content: "";
+   351|        position: absolute;
+   352|        inset: 4px 5px 5px 4px;
+   353|        border-radius: 4px;
+   354|        border: 2px solid rgba(246, 241, 228, 0.92);
+   355|        opacity: 0;
+   356|        transform: scale(0.8);
+   357|        transition: opacity 180ms ease, transform 180ms ease;
+   358|      }
+   359|
+   360|      .trait-choice input:checked + .box::after {
+   361|        opacity: 1;
+   362|        transform: scale(1);
+   363|      }
+   364|
+   365|      .trait-choice input:checked ~ .trait-copy .trait-title {
+   366|        color: var(--ink);
+   367|      }
+   368|
+   369|      .trait-choice input:checked ~ .trait-copy .trait-note {
+   370|        color: var(--ink-soft);
+   371|      }
+   372|
+   373|      .trait-copy {
+   374|        display: grid;
+   375|        gap: 3px;
+   376|      }
+   377|
+   378|      .trait-title {
+   379|        font-weight: 750;
+   380|        color: rgba(20, 48, 51, 0.86);
+   381|      }
+   382|
+   383|      .trait-note {
+   384|        color: var(--muted);
+   385|        font-size: 0.86rem;
+   386|        line-height: 1.4;
+   387|      }
+   388|
+   389|      .studio-side {
+   390|        display: grid;
+   391|        gap: 14px;
+   392|        align-content: start;
+   393|      }
+   394|
+   395|      .studio-card {
+   396|        padding: 18px;
+   397|        border-radius: 22px;
+   398|        background: rgba(255, 255, 255, 0.46);
+   399|        border: 1px solid rgba(20, 48, 51, 0.1);
+   400|      }
+   401|
+   402|      .studio-badge {
+   403|        display: inline-flex;
+   404|        align-items: center;
+   405|        gap: 10px;
+   406|        margin-bottom: 10px;
+   407|        padding: 8px 12px;
+   408|        border-radius: 999px;
+   409|        background: rgba(20, 48, 51, 0.08);
+   410|        font-weight: 700;
+   411|      }
+   412|
+   413|      .studio-badge::before {
+   414|        content: "";
+   415|        width: 9px;
+   416|        height: 9px;
+   417|        border-radius: 50%;
+   418|        background: var(--olive);
+   419|        box-shadow: 0 0 0 4px rgba(138, 169, 111, 0.16);
+   420|      }
+   421|
+   422|      .studio-card p {
+   423|        color: var(--ink-soft);
+   424|        line-height: 1.65;
+   425|        font-size: 0.98rem;
+   426|      }
+   427|
+   428|      .roadmap {
+   429|        display: grid;
+   430|        gap: 10px;
+   431|        margin-top: 14px;
+   432|      }
+   433|
+   434|      .roadmap .mini {
+   435|        color: var(--muted);
+   436|      }
+   437|
+   438|      .roadmap-pills {
+   439|        display: flex;
+   440|        flex-wrap: wrap;
+   441|        gap: 8px;
+   442|      }
+   443|
+   444|      .roadmap-pills .pill {
+   445|        background: rgba(20, 48, 51, 0.06);
+   446|      }
+   447|
+   448|      .meta strong {
+   449|        display: block;
+   450|        font-size: 1.24rem;
+   451|        margin-bottom: 4px;
+   452|      }
+   453|
+   454|      .mini {
+   455|        color: var(--muted);
+   456|        font-size: 0.92rem;
+   457|        line-height: 1.45;
+   458|      }
+   459|
+   460|      .art-panel {
+   461|        position: relative;
+   462|        min-height: 470px;
+   463|        background:
+   464|          linear-gradient(180deg, rgba(10, 58, 59, 0.12), rgba(10, 58, 59, 0.22)),
+   465|          radial-gradient(circle at 20% 22%, var(--scene-glow), transparent 19%),
+   466|          linear-gradient(180deg, var(--scene-top) 0%, var(--scene-bottom) 100%);
+   467|        overflow: hidden;
+   468|      }
+   469|
+   470|      .art-panel::before {
+   471|        content: "";
+   472|        position: absolute;
+   473|        inset: 16px;
+   474|        border-radius: 24px;
+   475|        border: 1px solid rgba(255, 248, 236, 0.08);
+   476|        pointer-events: none;
+   477|      }
+   478|
+   479|      .pond {
+   480|        position: absolute;
+   481|        inset: 0;
+   482|        overflow: hidden;
+   483|      }
+   484|
+   485|      .pond::before {
+   486|        content: "";
+   487|        position: absolute;
+   488|        inset: -8% -10% auto auto;
+   489|        width: 38%;
+   490|        height: 52%;
+   491|        border-radius: 50%;
+   492|        background: radial-gradient(circle, rgba(238, 214, 185, 0.16), transparent 68%);
+   493|      }
+   494|
+   495|      .lotus {
+   496|        position: absolute;
+   497|        left: 40px;
+   498|        top: 36px;
+   499|        width: 112px;
+   500|        height: 168px;
+   501|
