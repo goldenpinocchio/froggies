@@ -1,6 +1,8 @@
 # Froggies
 
-Bitcoin-native pond collection concept for nat.fun.
+Froggies is a Bitcoin-native pond collection concept for nat.fun with a target supply of 4,032. The supply is derived from Bitcoin difficulty data by reading compact difficulty values in each block header's `bits` field and selecting `fc` nBits periods as the deterministic mint windows.
+
+Trait counts are pulled from Bitcoin block hashes. Each hash is sliced into deterministic roll values, then mapped into each trait category's rarity ranges; the resulting rolls assign body color, eyes, expression, headgear, swamp accessories, and background/aura without relying on off-chain randomness.
 
 ## Trait Occurrences
 
