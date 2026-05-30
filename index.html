@@ -3,57 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Froggies — a Bitcoin-native pond collection</title>
+    <title>Froggies — Bitcoin-native pond collection</title>
     <meta
       name="description"
-      content="Froggies is a 4,032-supply Bitcoin-native pond collection: two fc generations, 2,016 blocks each, deterministic block-height traits, and ultra-rares reserved for Bits / hash."
+      content="Froggies is a 4,032-supply Bitcoin-native pond collection for nat.fun, generated from Bitcoin difficulty periods and block hashes."
     />
-    <meta name="theme-color" content="#0b3637" />
+    <meta name="theme-color" content="#071f1d" />
     <style>
       :root {
         color-scheme: dark;
-        --bg-0: #071717;
-        --bg-1: #0b2525;
-        --bg-2: #113233;
-        --panel: rgba(246, 232, 210, 0.94);
-        --panel-2: rgba(248, 238, 222, 0.98);
-        --panel-dark: rgba(9, 23, 21, 0.86);
-        --ink: #173537;
-        --ink-soft: #496160;
-        --muted: #657776;
-        --line: rgba(23, 53, 55, 0.12);
-        --line-dark: rgba(255, 255, 255, 0.12);
-        --sage: #a6c88d;
-        --moss: #88ad68;
-        --leaf: #7fb15c;
-        --jade: #c6e0b3;
-        --sun: #e4a15d;
-        --rose: #d9918f;
-        --paper: #f7ebd6;
-        --cream: #f4e3c5;
-        --gold: #d2a24d;
-        --shadow: 0 30px 80px rgba(1, 14, 13, 0.38);
-        --shadow-soft: 0 14px 30px rgba(1, 14, 13, 0.18);
-        --radius-xl: 32px;
-        --radius-lg: 24px;
-        --radius-md: 18px;
+        --pond: #071f1d;
+        --pond-2: #0d3430;
+        --moss: #9cc96b;
+        --mint: #d8f0b2;
+        --cream: #fff3d7;
+        --paper: #f7e5bf;
+        --orange: #f6a24f;
+        --blue: #8bd7ce;
+        --ink: #102b28;
+        --muted: rgba(255, 243, 215, 0.72);
+        --line: rgba(255, 243, 215, 0.16);
+        --card: rgba(255, 243, 215, 0.08);
+        --card-strong: rgba(255, 243, 215, 0.13);
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
       }
 
       * { box-sizing: border-box; }
-      html {
-        scroll-behavior: smooth;
-      }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         min-height: 100vh;
-        color: var(--paper);
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--cream);
         background:
-          radial-gradient(circle at 12% 12%, rgba(228, 161, 93, 0.18), transparent 22%),
-          radial-gradient(circle at 76% 15%, rgba(166, 200, 141, 0.16), transparent 20%),
-          radial-gradient(circle at 88% 78%, rgba(213, 149, 120, 0.08), transparent 18%),
-          linear-gradient(180deg, #0a2627 0%, var(--bg-1) 44%, #061516 100%);
-        overflow-x: hidden;
+          radial-gradient(circle at 18% 8%, rgba(156, 201, 107, 0.22), transparent 28%),
+          radial-gradient(circle at 82% 4%, rgba(246, 162, 79, 0.18), transparent 24%),
+          radial-gradient(circle at 50% 88%, rgba(139, 215, 206, 0.15), transparent 34%),
+          linear-gradient(180deg, #082624 0%, var(--pond) 58%, #041210 100%);
       }
 
       body::before {
@@ -61,1006 +47,450 @@
         position: fixed;
         inset: 0;
         pointer-events: none;
-        opacity: 0.18;
-        background:
-          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 6px),
-          repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 7px);
-        mix-blend-mode: soft-light;
+        opacity: 0.13;
+        background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(180deg, #000, transparent 82%);
       }
 
       a { color: inherit; }
-      h1, h2, h3, p, ul { margin: 0; }
-      ul { padding: 0; list-style: none; }
+      h1, h2, h3, p { margin: 0; }
       .wrap {
-        width: min(1240px, calc(100vw - 32px));
+        width: min(1120px, calc(100vw - 32px));
         margin: 0 auto;
-        padding: 22px 0 54px;
+        padding: 28px 0 56px;
       }
 
       .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 20px;
+        gap: 18px;
+        margin-bottom: 26px;
       }
-
       .brand {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
       }
-      .mark {
-        width: 56px;
-        height: 56px;
-        border-radius: 18px;
-        background:
-          linear-gradient(135deg, rgba(228, 161, 93, 0.98), rgba(166, 200, 141, 0.98));
-        box-shadow: 0 18px 30px rgba(1, 14, 13, 0.2);
+      .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
         display: grid;
         place-items: center;
-        color: #fff8eb;
-        font-weight: 900;
-        letter-spacing: -0.08em;
-        font-size: 28px;
+        background: linear-gradient(135deg, var(--moss), var(--orange));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+        color: var(--ink);
+        font-size: 1.45rem;
       }
-      .brand-copy .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(246, 232, 210, 0.14);
-        background: rgba(246, 232, 210, 0.07);
-        color: rgba(248, 238, 222, 0.9);
-        font-size: 0.82rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-      }
-      .brand-copy .eyebrow::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        background: var(--sun);
-        box-shadow: 0 0 0 5px rgba(228, 161, 93, 0.14);
-      }
-      .brand-copy strong {
-        display: block;
-        margin-top: 8px;
-        font-size: 1rem;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-      }
-      .brand-copy span {
-        display: block;
-        margin-top: 4px;
-        color: rgba(248, 238, 222, 0.64);
-        font-size: 0.92rem;
-      }
-
       .nav {
         display: flex;
-        align-items: center;
-        gap: 10px;
         flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
       }
       .nav a {
         text-decoration: none;
-      }
-      .navlink,
-      .navcta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 44px;
-        padding: 0 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 243, 215, 0.06);
         border-radius: 999px;
-        border: 1px solid rgba(246, 232, 210, 0.16);
-        background: rgba(246, 232, 210, 0.05);
-        color: rgba(248, 238, 222, 0.92);
-        font-weight: 650;
-        letter-spacing: 0.01em;
-        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+        padding: 10px 14px;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 0.92rem;
       }
-      .navlink:hover,
-      .navcta:hover {
-        transform: translateY(-1px);
-        background: rgba(246, 232, 210, 0.1);
-        border-color: rgba(246, 232, 210, 0.24);
-      }
-      .navcta {
-        background: linear-gradient(135deg, rgba(228, 161, 93, 0.94), rgba(166, 200, 141, 0.94));
-        color: #153436;
-        border-color: transparent;
-      }
+      .nav a:hover { color: var(--cream); background: rgba(255, 243, 215, 0.11); }
 
       .hero {
-        display: grid;
-        grid-template-columns: 1.08fr 0.92fr;
-        gap: 20px;
-        align-items: stretch;
-      }
-
-      .panel {
-        border-radius: var(--radius-xl);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .hero-copy {
         position: relative;
-        padding: 32px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 34px;
+        padding: clamp(28px, 5vw, 58px);
         background:
-          linear-gradient(180deg, rgba(248, 238, 222, 0.99), rgba(244, 227, 197, 0.94));
-        color: var(--ink);
+          linear-gradient(135deg, rgba(255, 243, 215, 0.12), rgba(255, 243, 215, 0.03)),
+          rgba(7, 31, 29, 0.72);
+        box-shadow: var(--shadow);
       }
-
-      .hero-copy::before {
-        content: "";
+      .hero::after {
+        content: "🐸";
         position: absolute;
-        inset: -140px auto auto -120px;
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(228, 161, 93, 0.22), transparent 64%);
+        right: clamp(18px, 5vw, 62px);
+        bottom: -34px;
+        font-size: clamp(7rem, 18vw, 14rem);
+        opacity: 0.16;
+        filter: saturate(0.9);
       }
-
       .kicker {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 243, 215, 0.08);
+        color: var(--mint);
         border-radius: 999px;
-        background: rgba(23, 53, 55, 0.06);
-        border: 1px solid rgba(23, 53, 55, 0.08);
-        color: var(--ink-soft);
-        font-size: 0.84rem;
-        letter-spacing: 0.16em;
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        font-weight: 850;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        position: relative;
       }
       .kicker::before {
         content: "";
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
-        background: var(--moss);
-        box-shadow: 0 0 0 5px rgba(136, 173, 104, 0.13);
+        background: var(--orange);
+        box-shadow: 0 0 0 6px rgba(246, 162, 79, 0.15);
       }
-
       h1 {
         margin-top: 18px;
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-        font-size: clamp(3.8rem, 8vw, 7rem);
+        max-width: 10ch;
+        font-family: Georgia, "Iowan Old Style", Palatino, serif;
+        font-size: clamp(4rem, 11vw, 8.7rem);
         line-height: 0.86;
-        letter-spacing: -0.08em;
-        color: #173537;
-        max-width: 7.5ch;
-        position: relative;
+        letter-spacing: -0.085em;
       }
-
       .lede {
-        margin-top: 18px;
-        max-width: 64ch;
-        font-size: 1.08rem;
-        line-height: 1.76;
-        color: var(--ink-soft);
-        position: relative;
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
         margin-top: 22px;
-        position: relative;
+        max-width: 760px;
+        color: var(--muted);
+        font-size: clamp(1.06rem, 1.8vw, 1.28rem);
+        line-height: 1.7;
       }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 16px;
-        border-radius: 16px;
-        text-decoration: none;
-        border: 1px solid rgba(23, 53, 55, 0.12);
-        background: rgba(255, 255, 255, 0.58);
-        color: var(--ink);
-        font-weight: 750;
-        box-shadow: var(--shadow-soft);
-        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
-      }
-      .btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.7);
-        border-color: rgba(23, 53, 55, 0.18);
-      }
-      .btn.primary {
-        background: linear-gradient(135deg, rgba(228, 161, 93, 0.96), rgba(166, 200, 141, 0.96));
-        color: #173537;
-        border-color: transparent;
-      }
+      .hero strong { color: var(--cream); }
 
       .stats {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
-        margin-top: 26px;
+        margin-top: 28px;
+        position: relative;
+        z-index: 1;
+      }
+      .stat, .card, .table-card {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--card);
+        backdrop-filter: blur(14px);
       }
       .stat {
-        padding: 14px 16px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.42);
-        border: 1px solid rgba(23, 53, 55, 0.08);
+        padding: 18px;
       }
       .stat strong {
         display: block;
-        font-size: 1.08rem;
-        color: #183538;
-        letter-spacing: -0.02em;
+        font-size: 1.45rem;
+        letter-spacing: -0.04em;
+        color: var(--mint);
       }
       .stat span {
         display: block;
-        margin-top: 6px;
-        color: var(--ink-soft);
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
-      .hero-art {
-        background:
-          linear-gradient(180deg, rgba(7, 32, 32, 0.96), rgba(5, 18, 18, 0.98));
-        padding: 24px;
-        display: grid;
-        gap: 14px;
-      }
-
-      .artframe {
-        border-radius: 28px;
-        overflow: hidden;
-        background:
-          radial-gradient(circle at 50% 30%, rgba(255, 243, 215, 0.12), transparent 28%),
-          linear-gradient(180deg, #104344 0%, #0d3232 52%, #0a2627 100%);
-        border: 1px solid rgba(246, 232, 210, 0.14);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-        position: relative;
-        aspect-ratio: 4 / 5;
-      }
-
-      .artframe::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 36%),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.03));
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      .art-caption {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: flex-end;
-      }
-      .caption-left {
-        min-width: 0;
-      }
-      .caption-left .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.76rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: rgba(246, 232, 210, 0.74);
-      }
-      .caption-left strong {
-        display: block;
-        margin-top: 6px;
-        font-size: 1rem;
-      }
-      .caption-left span {
-        display: block;
         margin-top: 5px;
-        color: rgba(246, 232, 210, 0.7);
-        font-size: 0.92rem;
+        color: var(--muted);
         line-height: 1.45;
-      }
-      .caption-chip {
-        flex: 0 0 auto;
-        padding: 10px 14px;
-        border-radius: 999px;
-        background: rgba(246, 232, 210, 0.08);
-        border: 1px solid rgba(246, 232, 210, 0.12);
-        color: rgba(246, 232, 210, 0.92);
-        font-weight: 700;
         font-size: 0.92rem;
       }
 
       .section {
-        margin-top: 20px;
-        border-radius: var(--radius-xl);
-        background: var(--panel);
-        color: var(--ink);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: var(--shadow);
-        overflow: hidden;
+        margin-top: 22px;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        padding: clamp(22px, 4vw, 34px);
+        background: rgba(5, 22, 20, 0.58);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
       }
-
       .section-head {
-        padding: 22px 24px 0;
+        display: grid;
+        grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+        gap: 20px;
+        align-items: end;
+        margin-bottom: 18px;
       }
-      .section-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(23, 53, 55, 0.06);
-        border: 1px solid rgba(23, 53, 55, 0.08);
-        color: var(--ink-soft);
-        font-size: 0.78rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
+      h2 {
+        font-family: Georgia, "Iowan Old Style", Palatino, serif;
+        font-size: clamp(2.2rem, 5vw, 4.4rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
       }
-      .section-title {
-        margin-top: 10px;
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-        font-size: clamp(2rem, 4vw, 3rem);
-        line-height: 1;
-        letter-spacing: -0.05em;
-      }
-      .section-lede {
-        margin-top: 12px;
-        max-width: 75ch;
-        color: var(--ink-soft);
-        font-size: 1rem;
-        line-height: 1.7;
+      .section-head p, .card p, .note, li {
+        color: var(--muted);
+        line-height: 1.62;
       }
 
-      .story-grid,
-      .trait-grid,
-      .archive-grid {
+      .generation-grid, .flow-grid, .trait-grid {
         display: grid;
         gap: 14px;
-        padding: 24px;
       }
-      .story-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .trait-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .archive-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .card {
-        border-radius: 22px;
-        background: var(--panel-2);
-        border: 1px solid rgba(23, 53, 55, 0.08);
-        padding: 18px;
-        box-shadow: var(--shadow-soft);
-      }
-      .card .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.74rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--ink-soft);
-        margin-bottom: 10px;
-      }
+      .generation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .trait-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .card { padding: 20px; }
       .card h3 {
         font-size: 1.2rem;
+        margin-bottom: 10px;
         letter-spacing: -0.02em;
-        color: #173537;
       }
-      .card p {
-        margin-top: 10px;
-        color: var(--ink-soft);
-        line-height: 1.68;
-        font-size: 0.98rem;
-      }
-      .story-card {
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.34));
-      }
-      .story-card .step {
-        font-size: 0.82rem;
-        color: rgba(23, 53, 55, 0.58);
-        letter-spacing: 0.14em;
+      .tag {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 12px;
+        border-radius: 999px;
+        padding: 7px 10px;
+        background: rgba(156, 201, 107, 0.14);
+        color: var(--mint);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
       }
-
-      .trait-grid .card {
+      .card dl {
+        margin: 0;
         display: grid;
         gap: 8px;
       }
-      .trait-grid .label {
+      .card div.row {
         display: flex;
-        align-items: baseline;
         justify-content: space-between;
         gap: 12px;
+        border-top: 1px solid rgba(255, 243, 215, 0.11);
+        padding-top: 8px;
       }
-      .trait-grid .label strong {
-        font-size: 1.05rem;
+      dt { color: var(--muted); }
+      dd { margin: 0; font-weight: 800; }
+      code, pre {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       }
-      .trait-grid .label span {
-        color: var(--ink-soft);
-        font-size: 0.9rem;
+      code {
+        color: var(--mint);
+        background: rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(255, 243, 215, 0.11);
+        padding: 2px 6px;
+        border-radius: 8px;
+      }
+      pre {
+        margin: 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.22);
+        color: var(--cream);
+        line-height: 1.55;
+      }
+      .mono-grid {
+        display: grid;
+        grid-template-columns: 1fr 0.9fr;
+        gap: 14px;
+        align-items: stretch;
+      }
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .steps li {
+        border: 1px solid rgba(255, 243, 215, 0.12);
+        background: rgba(255, 243, 215, 0.06);
+        border-radius: 18px;
+        padding: 13px 14px;
+      }
+
+      .trait-card h3 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .count {
+        color: var(--mint);
+        font-size: 0.86rem;
         white-space: nowrap;
       }
-
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 16px;
-      }
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        min-height: 38px;
-        padding: 0 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(23, 53, 55, 0.1);
-        background: rgba(23, 53, 55, 0.04);
-        color: var(--ink-soft);
-        font-size: 0.92rem;
-        font-weight: 600;
-      }
-
-      .count-list {
+      .chips {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         margin-top: 14px;
       }
-      .count-chip {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 54px;
-        padding: 7px 10px;
-        border-radius: 12px;
-        border: 1px solid rgba(23, 53, 55, 0.1);
-        background: rgba(23, 53, 55, 0.05);
-        color: #173537;
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-      }
-      .logic-note {
-        margin-top: 12px;
-        color: var(--ink-soft);
-        font-size: 0.9rem;
-        line-height: 1.55;
-      }
-
-      .quote {
-        padding: 24px;
-        background:
-          linear-gradient(180deg, rgba(246, 232, 210, 0.92), rgba(241, 224, 191, 0.86));
-      }
-      .quote blockquote {
-        margin: 0;
-        max-width: 74ch;
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-        font-size: clamp(1.5rem, 2.6vw, 2.1rem);
-        line-height: 1.28;
-        letter-spacing: -0.03em;
-        color: #183538;
-      }
-      .quote p {
-        margin-top: 12px;
-        color: var(--ink-soft);
-        line-height: 1.68;
-        max-width: 70ch;
-      }
-
-      .footerbar {
-        padding: 0 24px 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .fineprint {
-        color: var(--ink-soft);
-        font-size: 0.92rem;
-      }
-      .fineprint code {
-        padding: 2px 6px;
-        border-radius: 8px;
-        background: rgba(23, 53, 55, 0.06);
-      }
-
-      .pond-ui {
-        position: absolute;
-        inset: 0;
-        display: block;
-      }
       .chip {
-        position: absolute;
-        z-index: 2;
-        padding: 10px 12px;
-        border-radius: 14px;
-        background: rgba(7, 22, 22, 0.58);
-        color: rgba(246, 232, 210, 0.92);
-        border: 1px solid rgba(246, 232, 210, 0.12);
-        backdrop-filter: blur(10px);
-        font-size: 0.84rem;
-        line-height: 1.45;
-        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(255, 243, 215, 0.13);
+        background: rgba(255, 243, 215, 0.07);
+        color: rgba(255, 243, 215, 0.88);
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 0.9rem;
       }
-      .chip strong {
-        display: block;
-        color: #ffffff;
-        margin-bottom: 4px;
-      }
-      .chip.one { top: 18px; left: 18px; max-width: 42%; }
-      .chip.two { top: 18px; right: 18px; max-width: 40%; }
-      .chip.three { bottom: 18px; left: 18px; max-width: 54%; }
-
-      .art-svg {
-        width: 100%;
-        height: 100%;
-        display: block;
+      .chip b { color: var(--mint); }
+      .footer {
+        margin-top: 22px;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.6;
       }
 
-      @media (max-width: 1040px) {
-        .hero,
-        .story-grid,
-        .archive-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .hero {
-          grid-template-columns: 1fr;
-        }
+      @media (max-width: 900px) {
+        .topbar, .section-head { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
+        .stats, .flow-grid, .generation-grid, .trait-grid, .mono-grid { grid-template-columns: 1fr; }
+        .nav { justify-content: flex-start; }
+        .hero::after { opacity: 0.1; }
       }
 
-      @media (max-width: 760px) {
-        .wrap {
-          width: min(100vw - 20px, 1240px);
-          padding-top: 12px;
-        }
-        .topbar {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-        .hero-copy,
-        .hero-art,
-        .section-head,
-        .story-grid,
-        .trait-grid,
-        .archive-grid,
-        .quote,
-        .footerbar {
-          padding-left: 18px;
-          padding-right: 18px;
-        }
-        .hero-copy {
-          padding-top: 24px;
-          padding-bottom: 24px;
-        }
-        .stats {
-          grid-template-columns: 1fr;
-        }
-        .story-grid,
-        .trait-grid,
-        .archive-grid {
-          grid-template-columns: 1fr;
-        }
-        .art-caption {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .caption-chip {
-          align-self: flex-start;
-        }
-      }
-
-      @media (prefers-reduced-motion: no-preference) {
-        .artframe::after {
-          animation: shimmer 12s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-          0%, 100% { opacity: 0.82; }
-          50% { opacity: 1; }
-        }
+      @media (max-width: 560px) {
+        .wrap { width: min(100vw - 20px, 1120px); padding-top: 14px; }
+        .hero, .section { border-radius: 24px; }
+        h1 { font-size: clamp(3.2rem, 20vw, 5rem); }
+        .nav a { font-size: 0.86rem; padding: 9px 11px; }
       }
     </style>
   </head>
   <body>
     <main class="wrap">
       <header class="topbar">
-        <div class="brand" aria-label="Froggies home">
-          <div class="mark">F</div>
-          <div class="brand-copy">
-            <div class="eyebrow">Bitcoin-native pond collection</div>
-            <strong>Froggies</strong>
-            <span>Deterministic traits, editorial calm, and a frog-first launch system.</span>
-          </div>
+        <div class="brand">
+          <div class="logo">🐸</div>
+          <div>Froggies</div>
         </div>
-
-        <nav class="nav" aria-label="Primary">
-          <a class="navlink" href="#story">Story</a>
-          <a class="navlink" href="#traits">Traits</a>
-          <a class="navlink" href="#art">Art direction</a>
-          <a class="navlink" href="#logic">Logic</a>
-          <a class="navlink" href="#launch">Launch notes</a>
-          <a class="navcta" href="#art">Open the pond</a>
+        <nav class="nav" aria-label="Page sections">
+          <a href="#supply">Supply</a>
+          <a href="#traits">Traits</a>
+          <a href="#hash">Hash logic</a>
+          <a href="#rarities">Rarities</a>
         </nav>
       </header>
 
       <section class="hero" aria-labelledby="hero-title">
-        <article class="panel hero-copy">
-          <div class="kicker">Froggies · 4,032 supply · fc block logic</div>
-          <h1 id="hero-title">The pond remembers the block.</h1>
-          <p class="lede">
-            Froggies is a Bitcoin-native pond collection built like a poster archive: one hero frog per token,
-            deterministic traits from a 4,032-block fc window, and a visual language that stays lo-fi, editorial, and
-            unmistakably pond-first.
-          </p>
-          <p class="lede" style="font-style: italic; max-width: 58ch;">
-            This page is the logic layer for the collection — where the 2 × 2,016 generation split, block-height rarity
-            buckets, and ultra-rare hash rules live before the art is finalized.
-          </p>
-          <div class="cta-row">
-            <a class="btn primary" href="#story">Read the story</a>
-            <a class="btn" href="#traits">See the trait matrix</a>
-            <a class="btn" href="#launch">Open launch copy</a>
-          </div>
-
-          <div class="stats" role="list" aria-label="Collection highlights">
-            <div class="stat" role="listitem">
-              <strong>4,032 supply</strong>
-              <span>Two fc generations of 2,016 blocks each — enough room for patterns to breathe.</span>
-            </div>
-            <div class="stat" role="listitem">
-              <strong>One frog hero</strong>
-              <span>Every mint resolves into a single readable character, not a crowded scene.</span>
-            </div>
-            <div class="stat" role="listitem">
-              <strong>Digit-bucket reveal</strong>
-              <span>Most traits resolve from block-height digits; gold and diamond stay hash-gated.</span>
-            </div>
-          </div>
-        </article>
-
-        <aside class="panel hero-art" id="art" aria-label="Froggies art direction preview">
-          <div class="artframe">
-            <div class="pond-ui">
-              <div class="chip one">
-                <strong>Body</strong>
-                Sage, mint, jade, and moss tones — never mascot neon.
-              </div>
-              <div class="chip two">
-                <strong>Eyes / mouth</strong>
-                Calm shine, sleepy lids, and subtle expressions.
-              </div>
-              <div class="chip three">
-                <strong>Scene note</strong>
-                Dark teal water, cream panels, soft lily pads, and a quiet moonlit archive feel.
-              </div>
-            </div>
-            <svg class="art-svg" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract Froggies pond illustration">
-              <defs>
-                <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#134a49"/>
-                  <stop offset="55%" stop-color="#0f3738"/>
-                  <stop offset="100%" stop-color="#082324"/>
-                </linearGradient>
-                <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#fff4d4"/>
-                  <stop offset="100%" stop-color="#f0d6a4"/>
-                </linearGradient>
-                <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#155a58"/>
-                  <stop offset="100%" stop-color="#0c3435"/>
-                </linearGradient>
-                <linearGradient id="frog" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#aad96f"/>
-                  <stop offset="100%" stop-color="#79ad4b"/>
-                </linearGradient>
-                <linearGradient id="frogShadow" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#6e9941"/>
-                  <stop offset="100%" stop-color="#54742f"/>
-                </linearGradient>
-                <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
-              </defs>
-
-              <rect width="800" height="1000" fill="url(#bg)"/>
-              <circle cx="612" cy="142" r="86" fill="url(#moon)" opacity="0.9"/>
-              <circle cx="612" cy="142" r="104" fill="#fff4d4" opacity="0.08" filter="url(#blur)"/>
-              <path d="M0 650C130 620 220 640 330 680C420 714 520 716 620 684C695 660 744 655 800 668V1000H0Z" fill="url(#water)"/>
-
-              <ellipse cx="392" cy="684" rx="250" ry="46" fill="#9ee0c2" opacity="0.10" filter="url(#blur)"/>
-              <ellipse cx="390" cy="672" rx="228" ry="40" fill="#f7e7bf" opacity="0.07"/>
-
-              <ellipse cx="210" cy="700" rx="108" ry="72" fill="#8ac074" opacity="0.86"/>
-              <ellipse cx="210" cy="700" rx="78" ry="50" fill="#bedf97" opacity="0.48"/>
-              <ellipse cx="566" cy="712" rx="122" ry="82" fill="#7faa64" opacity="0.9"/>
-              <ellipse cx="566" cy="712" rx="86" ry="54" fill="#bedf97" opacity="0.34"/>
-
-              <circle cx="272" cy="635" r="14" fill="#f7edc8" opacity="0.9"/>
-              <circle cx="308" cy="624" r="8" fill="#f7edc8" opacity="0.8"/>
-              <circle cx="343" cy="646" r="5" fill="#f7edc8" opacity="0.72"/>
-              <circle cx="540" cy="636" r="12" fill="#f7edc8" opacity="0.8"/>
-              <circle cx="576" cy="624" r="6" fill="#f7edc8" opacity="0.72"/>
-
-              <ellipse cx="400" cy="650" rx="145" ry="148" fill="url(#frogShadow)"/>
-              <ellipse cx="400" cy="620" rx="170" ry="116" fill="url(#frog)"/>
-              <ellipse cx="400" cy="676" rx="106" ry="74" fill="#f4e8ca"/>
-              <ellipse cx="400" cy="674" rx="98" ry="62" fill="#fbf4df" opacity="0.86"/>
-
-              <circle cx="318" cy="470" r="58" fill="url(#frog)"/>
-              <circle cx="482" cy="470" r="58" fill="url(#frog)"/>
-              <circle cx="318" cy="456" r="26" fill="#dff5a8" opacity="0.9"/>
-              <circle cx="482" cy="456" r="26" fill="#dff5a8" opacity="0.9"/>
-              <circle cx="318" cy="452" r="16" fill="#20332d"/>
-              <circle cx="482" cy="452" r="16" fill="#20332d"/>
-              <circle cx="318" cy="448" r="6" fill="#fff8eb"/>
-              <circle cx="482" cy="448" r="6" fill="#fff8eb"/>
-              <path d="M355 552C369 566 382 573 400 573C418 573 431 566 445 552" fill="none" stroke="#21402f" stroke-width="10" stroke-linecap="round"/>
-
-              <path d="M318 650C300 648 285 658 274 675C266 689 264 704 268 718C273 737 289 749 308 754" fill="none" stroke="#54742f" stroke-width="26" stroke-linecap="round"/>
-              <path d="M481 650C499 648 514 658 525 675C533 689 535 704 531 718C526 737 510 749 491 754" fill="none" stroke="#54742f" stroke-width="26" stroke-linecap="round"/>
-              <path d="M356 748C331 760 312 777 298 803" fill="none" stroke="#54742f" stroke-width="28" stroke-linecap="round"/>
-              <path d="M444 748C469 760 488 777 502 803" fill="none" stroke="#54742f" stroke-width="28" stroke-linecap="round"/>
-
-              <path d="M100 786C168 758 238 748 316 758C344 762 364 772 387 782" fill="none" stroke="#d9c48a" stroke-width="4" opacity="0.7"/>
-              <path d="M412 784C504 752 594 744 702 764" fill="none" stroke="#d9c48a" stroke-width="4" opacity="0.7"/>
-              <path d="M92 835C184 806 280 794 387 802C485 810 580 804 704 778" fill="none" stroke="#9bcfa6" stroke-width="5" opacity="0.34"/>
-            </svg>
-          </div>
-
-          <div class="art-caption">
-            <div class="caption-left">
-              <div class="eyebrow">Reference mood</div>
-              <strong>Dark teal water · cream panels · soft green frog</strong>
-              <span>
-                A quiet, art-directed pond world — more poster archive than mascot toy.
-              </span>
-            </div>
-            <div class="caption-chip">4,032 frogs · 2 fc generations</div>
-          </div>
-        </aside>
+        <div class="kicker">Bitcoin-native · nat.fun · no off-chain randomness</div>
+        <h1 id="hero-title">Froggies</h1>
+        <p class="lede">
+          <strong>Froggies</strong> is a Bitcoin-native pond collection designed for nat.fun, with a fixed supply of
+          <strong>4,032 unique Froggies</strong>. Supply, generations, and traits are derived entirely from Bitcoin blockchain data.
+        </p>
+        <div class="stats" aria-label="Collection facts">
+          <div class="stat"><strong>4,032</strong><span>fixed total supply</span></div>
+          <div class="stat"><strong>2</strong><span>qualifying <code>fc</code> difficulty periods</span></div>
+          <div class="stat"><strong>2,016</strong><span>blocks per generation</span></div>
+          <div class="stat"><strong>0</strong><span>off-chain randomness</span></div>
+        </div>
       </section>
 
-      <section class="section" id="story" aria-labelledby="story-title">
+      <section class="section" id="supply" aria-labelledby="supply-title">
         <div class="section-head">
-          <div class="section-kicker">Storyline</div>
-          <h2 class="section-title" id="story-title">A mint begins when the pond wakes up.</h2>
-          <p class="section-lede">
-            The collection should feel like a small, poetic system: the fc window creates two equal generations, the
-            block height sets most visible traits, and the final frog feels collected rather than randomly generated.
+          <h2 id="supply-title">Supply generation</h2>
+          <p>
+            Bitcoin adjusts mining difficulty every <strong>2,016 blocks</strong>. Froggies uses difficulty periods whose block header
+            <code>bits</code> value contains the <code>fc</code> signal.
           </p>
         </div>
-
-        <div class="story-grid">
-          <article class="card story-card">
-            <div class="step">01 · the pond sleeps</div>
-            <h3>A calm world waits under moonlight.</h3>
-            <p>
-              The surface is still, the lily pads are quiet, and the scene feels like a printed art plate before the
-              ink hits the paper.
-            </p>
+        <div class="generation-grid">
+          <article class="card">
+            <span class="tag">Gen 1</span>
+            <h3>Early pond</h3>
+            <dl>
+              <div class="row"><dt>Block range</dt><dd>266,112 – 268,127</dd></div>
+              <div class="row"><dt>First block date</dt><dd>2013-10-26 02:24:32 UTC</dd></div>
+              <div class="row"><dt><code>bits</code> value</dt><dd><code>190afc85</code></dd></div>
+              <div class="row"><dt>Froggies</dt><dd>2,016</dd></div>
+            </dl>
           </article>
-          <article class="card story-card">
-            <div class="step">02 · the block arrives</div>
-            <h3>The chain sets the tone.</h3>
-            <p>
-              A Bitcoin block contributes the height digits that pick the frog’s body, face, accessories, and aura. It is
-              deterministic, not random noise.
-            </p>
-          </article>
-          <article class="card story-card">
-            <div class="step">03 · the frog resolves</div>
-            <h3>The character emerges in one clear read.</h3>
-            <p>
-              Each Froggie should be readable at thumbnail size: a distinct silhouette, a subtle mood, and a rarity profile
-              that can be traced back to the source block.
-            </p>
-          </article>
-          <article class="card story-card">
-            <div class="step">04 · the archive grows</div>
-            <h3>The pond becomes a collection with memory.</h3>
-            <p>
-              Over time, the set feels like a little archive of moods — quiet, collectible, and easy to explain to a
-              friend in one sentence.
-            </p>
+          <article class="card">
+            <span class="tag">Gen 2</span>
+            <h3>Future pond</h3>
+            <dl>
+              <div class="row"><dt>Block range</dt><dd>933,408 – 935,423</dd></div>
+              <div class="row"><dt>First block date</dt><dd>2026-01-22 19:31:22 UTC</dd></div>
+              <div class="row"><dt><code>bits</code> value</dt><dd><code>1701fca1</code></dd></div>
+              <div class="row"><dt>Froggies</dt><dd>2,016</dd></div>
+            </dl>
           </article>
         </div>
       </section>
 
       <section class="section" id="traits" aria-labelledby="traits-title">
         <div class="section-head">
-          <div class="section-kicker">Trait matrix</div>
-          <h2 class="section-title" id="traits-title">The system should be simple enough to explain, rich enough to collect.</h2>
-          <p class="section-lede">
-            These buckets keep the visual system readable. The goal is not maximal chaos; it’s a flexible set of
-            choices that still feels like one family.
+          <h2 id="traits-title">Trait generation</h2>
+          <p>
+            Every Froggie is linked to one Bitcoin block. Its block hash is split into deterministic rolls, then mapped into
+            rarity ranges for each visible trait category.
           </p>
         </div>
-
-        <div class="trait-grid">
-          <article class="card">
-            <div class="label"><strong>Body color</strong><span>base read</span></div>
-            <p>Soft greens, sage, mint, pale jade, moss, and occasional warm or cool outliers. Eleven body buckets sum cleanly to the full supply.</p>
-            <div class="count-list" aria-label="Body color rarity counts"><span class="count-chip">1,008</span><span class="count-chip">800</span><span class="count-chip">560</span><span class="count-chip">448</span><span class="count-chip">400</span><span class="count-chip">320</span><span class="count-chip">192</span><span class="count-chip">160</span><span class="count-chip">96</span><span class="count-chip">32</span><span class="count-chip">16</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Eyes</strong><span>personality</span></div>
-            <p>Calm dot eyes, sleepy lids, glossy highlights, curious wide eyes, and rare heightened states for special pieces.</p>
-            <div class="count-list" aria-label="Eyes rarity counts"><span class="count-chip">1,472</span><span class="count-chip">800</span><span class="count-chip">608</span><span class="count-chip">448</span><span class="count-chip">256</span><span class="count-chip">352</span><span class="count-chip">96</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Mouth</strong><span>expression</span></div>
-            <p>Tiny smile, neutral content face, soft grin, puckered surprise, and sleepy lines — subtle first, rarity second.</p>
-            <div class="count-list" aria-label="Mouth rarity counts"><span class="count-chip">1,216</span><span class="count-chip">960</span><span class="count-chip">640</span><span class="count-chip">512</span><span class="count-chip">320</span><span class="count-chip">256</span><span class="count-chip">128</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Headgear</strong><span>style accent</span></div>
-            <p>Lily crown, cap, simple headband, leaf wrap, and ceremonial details. Headgear stays silhouette-safe.</p>
-            <div class="count-list" aria-label="Headgear rarity counts"><span class="count-chip">1,152</span><span class="count-chip">768</span><span class="count-chip">576</span><span class="count-chip">512</span><span class="count-chip">384</span><span class="count-chip">320</span><span class="count-chip">256</span><span class="count-chip">64</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Swamp accessories</strong><span>scene texture</span></div>
-            <p>Lily pads, lotus, bubbles, flies, coins, ripples, sparkles, and pond debris — the world feels lived in.</p>
-            <div class="count-list" aria-label="Swamp accessories rarity counts"><span class="count-chip">1,280</span><span class="count-chip">768</span><span class="count-chip">576</span><span class="count-chip">512</span><span class="count-chip">384</span><span class="count-chip">320</span><span class="count-chip">128</span><span class="count-chip">64</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Background / aura</strong><span>mood</span></div>
-            <p>Dusk ponds, moonlit mist, soft gradients, warm paper, poster-block skies, and rare aura states.</p>
-            <div class="count-list" aria-label="Background / aura rarity counts"><span class="count-chip">1,280</span><span class="count-chip">768</span><span class="count-chip">640</span><span class="count-chip">512</span><span class="count-chip">384</span><span class="count-chip">320</span><span class="count-chip">128</span></div>
-            <div class="logic-note">Total: 4,032 tokens.</div>
-          </article>
+        <div class="flow-grid">
+          <article class="card"><span class="tag">01</span><h3>Assign block</h3><p>Each Froggie receives one block from a qualifying <code>fc</code> difficulty period.</p></article>
+          <article class="card"><span class="tag">02</span><h3>Split hash</h3><p>The 64-character Bitcoin block hash is divided into deterministic hexadecimal chunks.</p></article>
+          <article class="card"><span class="tag">03</span><h3>Convert rolls</h3><p>Each chunk becomes a number used as a repeatable trait roll.</p></article>
+          <article class="card"><span class="tag">04</span><h3>Map traits</h3><p>Rolls are mapped to rarity ranges to generate the final Froggie attributes.</p></article>
         </div>
       </section>
 
-      <section class="section" id="logic" aria-labelledby="logic-title">
+      <section class="section" id="hash" aria-labelledby="hash-title">
         <div class="section-head">
-          <div class="section-kicker">Reveal logic</div>
-          <h2 class="section-title" id="logic-title">Two generations. 4,032 blocks. No hand-waved rarity.</h2>
-          <p class="section-lede">
-            The new supply works because the fc window naturally splits into 2 generations of 2,016 blocks each.
-            Most visible traits can be assigned from block-height digit buckets; the flashiest ultra-rares stay reserved
-            for Bits / hash so gold and diamond remain truly scarce.
+          <h2 id="hash-title">Hash logic</h2>
+          <p>
+            The same block hash always produces the same Froggie. Anyone can reproduce the result from on-chain data alone.
           </p>
         </div>
-
-        <div class="trait-grid">
-          <article class="card">
-            <div class="label"><strong>Generation split</strong><span>2,016 / 2,016</span></div>
-            <p>
-              The first digit gives a perfect fork: <strong>2xxxxx</strong> vs <strong>9xxxxx</strong>. The second digit also gives a clean split:
-              <strong>x3xxxx</strong> vs <strong>x6xxxx</strong>. Either can anchor the two fc generations.
-            </p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Sweet spot digits</strong><span>trait bucketing</span></div>
-            <p>
-              The fourth and fifth digits produce the cleanest rarity-sized groups, while the second and third digits
-              support broader common / uncommon splits.
-            </p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Exact count palette</strong><span>natural buckets</span></div>
-            <p>
-              The window hits useful sizes directly: 1,472, 1,280, 1,216, 1,152, 960, 800, 768, 640, 608, 576, 512,
-              448, 400, 384, 352, 320, 256, 192, 160, 128, 96, and 64.
-            </p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Ultra-rare reserve</strong><span>Bits / hash</span></div>
-            <p>
-              Use block-height digits for body, eyes, mouth, headgear, swamp accessory, and background / aura. Reserve
-              Bits or hash checks for the rarest materials — especially <strong>gold</strong> and <strong>diamond</strong>.
-            </p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Example match · 1,472</strong><span>eyes candidate</span></div>
-            <p><code>pos3 in [0-5]</code> AND <code>pos4 in [0-5]</code> gives an exact 1,472-count bucket.</p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Example match · 1,280</strong><span>accessory / aura</span></div>
-            <p><code>pos2 in [0-4]</code> AND <code>pos4 in [1-8]</code> gives an exact 1,280-count bucket.</p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Example match · 64</strong><span>rare floor</span></div>
-            <p><code>pos2 in [8-9]</code> AND <code>pos5 in [4-8]</code> gives a clean 64-count rarity bucket.</p>
-          </article>
-          <article class="card">
-            <div class="label"><strong>Prefix hit · 128</strong><span>special case</span></div>
-            <p>The <code>268</code> height prefix gives exactly 128, useful for a named swamp detail or limited aura state.</p>
-          </article>
+        <div class="mono-grid">
+          <pre aria-label="Example Bitcoin block hash">00000000000000000001dbe44ff50d592964c9414af0f08b3d3654e806983d15</pre>
+          <pre aria-label="Hash chunk mapping">0001dbe4 → Body Color
+4ff50d59 → Eyes
+2964c941 → Mouth / Expression
+4af0f08b → Headgear / Props
+3d3654e8 → Swamp Accessory
+06983d15 → Background / Aura</pre>
         </div>
+        <ol class="steps" style="margin-top: 14px;">
+          <li>Bitcoin Block Hash ↓</li>
+          <li>Split into Hex Chunks ↓</li>
+          <li>Convert Chunks to Numbers ↓</li>
+          <li>Map Numbers to Trait Ranges ↓</li>
+          <li>Generate Froggie Traits</li>
+        </ol>
       </section>
 
-      <section class="section" aria-labelledby="archive-title">
+      <section class="section" id="rarities" aria-labelledby="rarities-title">
         <div class="section-head">
-          <div class="section-kicker">Sample archetypes</div>
-          <h2 class="section-title" id="archive-title">A few Froggies worth imagining first.</h2>
-          <p class="section-lede">
-            These are not final names — just a copy layer to help the collection feel like a real world instead of a trait
-            spreadsheet.
+          <h2 id="rarities-title">Trait rarities</h2>
+          <p>
+            Current trait categories and occurrence counts from the README. These totals are deterministic and driven by Bitcoin block hashes.
           </p>
         </div>
-
-        <div class="archive-grid">
-          <article class="card">
-            <div class="eyebrow">Archetype 01</div>
-            <h3>Pond Scholar</h3>
-            <p>Sleepy shine, bookish cap, round body, and a quiet dusk background — the frog that feels like it knows the archive.</p>
-            <div class="pill-row">
-              <span class="pill">calm eyes</span>
-              <span class="pill">cap</span>
-              <span class="pill">dusk water</span>
-            </div>
+        <div class="trait-grid">
+          <article class="card trait-card">
+            <h3>Body Color <span class="count">10 traits</span></h3>
+            <div class="chips"><span class="chip">Swamp Green <b>701</b></span><span class="chip">Pastel Green <b>585</b></span><span class="chip">Toxic Yellow <b>496</b></span><span class="chip">Turquoise <b>468</b></span><span class="chip">Night Black <b>414</b></span><span class="chip">Neon Pink <b>394</b></span><span class="chip">Ghost <b>333</b></span><span class="chip">Albino White <b>262</b></span><span class="chip">Gold Body <b>201</b></span><span class="chip">Diamond Body <b>178</b></span></div>
           </article>
-          <article class="card">
-            <div class="eyebrow">Archetype 02</div>
-            <h3>Lily Pad Captain</h3>
-            <p>Sharper stance, confident grin, moonlit water, and a tiny crown-ish accent that keeps the pose collectible.</p>
-            <div class="pill-row">
-              <span class="pill">bright eyes</span>
-              <span class="pill">crown detail</span>
-              <span class="pill">moonlit pond</span>
-            </div>
+          <article class="card trait-card">
+            <h3>Eyes <span class="count">7 traits</span></h3>
+            <div class="chips"><span class="chip">Wide Sleepy <b>1,473</b></span><span class="chip">One-Eye Wink <b>904</b></span><span class="chip">Bulging <b>598</b></span><span class="chip">Hypnotic Spiral <b>397</b></span><span class="chip">Gold Eyes <b>291</b></span><span class="chip">Diamond Eyes <b>192</b></span><span class="chip">Laser Eyes <b>177</b></span></div>
           </article>
-          <article class="card">
-            <div class="eyebrow">Archetype 03</div>
-            <h3>Raincoat Minimalist</h3>
-            <p>Simple silhouette, no extra clutter, soft muted colors, and a clean poster-like background that lets the frog breathe.</p>
-            <div class="pill-row">
-              <span class="pill">minimal</span>
-              <span class="pill">soft palette</span>
-              <span class="pill">clean silhouette</span>
-            </div>
+          <article class="card trait-card">
+            <h3>Mouth / Expression <span class="count">6 traits</span></h3>
+            <div class="chips"><span class="chip">Grin <b>1,551</b></span><span class="chip">Croak <b>980</b></span><span class="chip">Deadpan <b>618</b></span><span class="chip">Shocked <b>413</b></span><span class="chip">Frog Tongue <b>290</b></span><span class="chip">Chewing Bug <b>180</b></span></div>
+          </article>
+          <article class="card trait-card">
+            <h3>Headgear / Props <span class="count">9 traits</span></h3>
+            <div class="chips"><span class="chip">None <b>893</b></span><span class="chip">Leaf Cap <b>769</b></span><span class="chip">Ribbit Hoodie <b>604</b></span><span class="chip">Bandana <b>399</b></span><span class="chip">Goggles <b>398</b></span><span class="chip">Wizard Hat <b>322</b></span><span class="chip">Pirate Hat <b>316</b></span><span class="chip">Pin Wheel Hat <b>169</b></span><span class="chip">Crown <b>162</b></span></div>
+          </article>
+          <article class="card trait-card">
+            <h3>Swamp Accessories <span class="count">8 traits</span></h3>
+            <div class="chips"><span class="chip">Lily Pad <b>823</b></span><span class="chip">Fly <b>751</b></span><span class="chip">Bubble <b>698</b></span><span class="chip">Mushrooms <b>616</b></span><span class="chip">Lightning Bug <b>469</b></span><span class="chip">Bones <b>290</b></span><span class="chip">Fishing Hook <b>208</b></span><span class="chip">Coin Stack <b>177</b></span></div>
+          </article>
+          <article class="card trait-card">
+            <h3>Background / Aura <span class="count">7 traits</span></h3>
+            <div class="chips"><span class="chip">Sunrise Marsh <b>903</b></span><span class="chip">Murky Pond <b>857</b></span><span class="chip">Moonlit Swamp <b>783</b></span><span class="chip">Rainy Night <b>622</b></span><span class="chip">Toxic Swamp Mist <b>368</b></span><span class="chip">Bitcoin Orange Glow <b>306</b></span><span class="chip">Neon Vapor <b>193</b></span></div>
           </article>
         </div>
       </section>
 
-      <section class="section quote" id="launch" aria-labelledby="launch-title">
-        <div class="section-kicker">Launch copy</div>
-        <blockquote id="launch-title">
-          Some collections are loud. Froggies should feel like a quiet thing you discover and keep returning to.
-        </blockquote>
-        <p>
-          Built for a calm, art-first pond collection: one frog hero per NFT, modular traits, two fc generations, and a reveal system that
-          stays easy to explain. The chain decides the outcome; the art makes it lovable.
-        </p>
-        <div class="pill-row">
-          <span class="pill">Bitcoin-native</span>
-          <span class="pill">editorial pond mood</span>
-          <span class="pill">deterministic traits</span>
-          <span class="pill">4,032 supply</span>
-        </div>
-      </section>
-
-      <footer class="section" style="margin-top: 20px;">
-        <div class="footerbar">
-          <div class="fineprint">
-            Froggies lives at <code>/froggies/</code> on GitHub Pages.
-          </div>
-          <div class="fineprint">
-            Next step: art pass, then tighten the final mint copy.
-          </div>
-        </div>
-      </footer>
+      <p class="footer">
+        Froggies uses Bitcoin as the sole source of truth for collection supply, generation assignment, trait rarity, and trait selection.
+      </p>
     </main>
   </body>
 </html>
