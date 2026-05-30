@@ -64,59 +64,64 @@ No off-chain randomness, reveal process, or external entropy source is required.
 
 The result is a fully deterministic collection whose existence and attributes are anchored directly to Bitcoin's blockchain history.
 
+## Trait Generation
 
-## Trait Occurrences
+Each Froggie's traits are generated directly from its assigned Bitcoin block hash.
 
-| Trait | Trait Type | Occurrences |
-|---|---:|---:|
-| Body Color | swamp green | 701 |
-| Body Color | pastel green | 585 |
-| Body Color | turquoise | 468 |
-| Body Color | toxic yellow | 496 |
-| Body Color | neon pink | 394 |
-| Body Color | night black | 414 |
-| Body Color | albino white | 262 |
-| Body Color | ghost | 333 |
-| Body Color | gold body | 201 |
-| Body Color | diamond body | 178 |
-| Eyes | wide sleepy | 1473 |
-| Eyes | one-eye wink | 904 |
-| Eyes | bulging | 598 |
-| Eyes | hypnotic spiral | 397 |
-| Eyes | gold eyes | 291 |
-| Eyes | diamond eyes | 192 |
-| Eyes | laser eyes | 177 |
-| Mouth / Expression | grin | 1551 |
-| Mouth / Expression | croak | 980 |
-| Mouth / Expression | deadpan | 618 |
-| Mouth / Expression | shocked | 413 |
-| Mouth / Expression | frog tongue | 290 |
-| Mouth / Expression | chewing bug | 180 |
-| Headgear / Props | none | 893 |
-| Headgear / Props | leaf cap | 769 |
-| Headgear / Props | ribbit hoodie | 604 |
-| Headgear / Props | bandana | 399 |
-| Headgear / Props | goggles | 398 |
-| Headgear / Props | pirate hat | 316 |
-| Headgear / Props | wizard hat | 322 |
-| Headgear / Props | pin wheel hat | 169 |
-| Headgear / Props | crown | 162 |
-| Swamp Accessories | lily pad | 823 |
-| Swamp Accessories | fly | 751 |
-| Swamp Accessories | bubble | 698 |
-| Swamp Accessories | mushrooms | 616 |
-| Swamp Accessories | lightning bug | 469 |
-| Swamp Accessories | bones | 290 |
-| Swamp Accessories | fishing hook | 208 |
-| Swamp Accessories | coin stack | 177 |
-| Background / Aura | murky pond | 857 |
-| Background / Aura | sunrise marsh | 903 |
-| Background / Aura | moonlit swamp | 783 |
-| Background / Aura | rainy night | 622 |
-| Background / Aura | toxic swamp mist | 368 |
-| Background / Aura | Bitcoin orange glow | 306 |
-| Background / Aura | neon vapor | 193 |
+Bitcoin block hashes are already represented as 64-character hexadecimal strings:
 
-## Notes
-- Supply target: 4,032
-- Traits are deterministic and driven by Bitcoin block data
+```text
+00000000000000000001dbe44ff50d592964c9414af0f08b3d3654e806983d15
+```
+
+The hash is divided into eight deterministic 8-character chunks:
+
+```text
+00000000 | 00000000 | 0001dbe4 | 4ff50d59
+2964c941 | 4af0f08b | 3d3654e8 | 06983d15
+```
+
+Each chunk is a hexadecimal value using the character set:
+
+```text
+0 1 2 3 4 5 6 7 8 9 a b c d e f
+```
+
+The chunks are converted into integers and used as deterministic trait rolls.
+
+### Example
+
+```text
+0001dbe4 → Body Color
+4ff50d59 → Eyes
+2964c941 → Mouth / Expression
+4af0f08b → Headgear / Props
+3d3654e8 → Swamp Accessory
+06983d15 → Background / Aura
+```
+
+Each resulting number is mapped to a predefined rarity range within its trait category, producing the final Froggie.
+
+```text
+Bitcoin Block Hash
+        ↓
+Split into Hex Chunks
+        ↓
+Convert Chunks to Numbers
+        ↓
+Map Numbers to Trait Ranges
+        ↓
+Generate Froggie Traits
+```
+
+Because every trait originates from Bitcoin block data, the entire collection is deterministic, reproducible, and independently verifiable without any off-chain randomness.
+
+
+| Category               | Traits                                                                                                                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Body Color**         | Swamp Green (701), Pastel Green (585), Toxic Yellow (496), Turquoise (468), Night Black (414), Neon Pink (394), Ghost (333), Albino White (262), Gold Body (201), Diamond Body (178) |
+| **Eyes**               | Wide Sleepy (1,473), One-Eye Wink (904), Bulging (598), Hypnotic Spiral (397), Gold Eyes (291), Diamond Eyes (192), Laser Eyes (177)                                                 |
+| **Mouth / Expression** | Grin (1,551), Croak (980), Deadpan (618), Shocked (413), Frog Tongue (290), Chewing Bug (180)                                                                                        |
+| **Headgear / Props**   | None (893), Leaf Cap (769), Ribbit Hoodie (604), Bandana (399), Goggles (398), Wizard Hat (322), Pirate Hat (316), Pin Wheel Hat (169), Crown (162)                                  |
+| **Swamp Accessories**  | Lily Pad (823), Fly (751), Bubble (698), Mushrooms (616), Lightning Bug (469), Bones (290), Fishing Hook (208), Coin Stack (177)                                                     |
+| **Background / Aura**  | Sunrise Marsh (903), Murky Pond (857), Moonlit Swamp (783), Rainy Night (622), Toxic Swamp Mist (368), Bitcoin Orange Glow (306), Neon Vapor (193)                                   |
