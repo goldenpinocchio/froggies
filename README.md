@@ -15,6 +15,7 @@ Froggies identifies difficulty periods whose `bits` value contains the **`fc` si
 |------------|-------------|------------------------|--------------|------------|
 | Gen 1 | 266,112 – 268,127 | 2013-10-26 02:24:32 | `190afc85` | 2016 |
 | Gen 2 | 933,408 – 935,423 | 2026-01-22 19:31:22 | `1701fca1` | 2016 |
+
 Each qualifying difficulty period contains exactly **2,016 blocks**:
 
 * Gen 1: 2,016 Froggies
