@@ -393,14 +393,14 @@
         </div>
         <nav class="nav" aria-label="Page sections">
           <a href="#supply">Supply</a>
-          <a href="#traits">Traits</a>
+          <a href="#traits">Trait generation</a>
           <a href="#hash">Hash logic</a>
-          <a href="#rarities">Rarities</a>
+          <a href="#rarities">Trait rarities</a>
         </nav>
       </header>
 
       <section class="hero" aria-labelledby="hero-title">
-        <div class="kicker">Bitcoin-native · nat.fun · no off-chain randomness</div>
+        <div class="kicker">Bitcoin-native randomness </div>
         <h1 id="hero-title">Froggies</h1>
         <p class="lede">
           <strong>Froggies</strong> is a Bitcoin-native pond collection designed for nat.fun, with a fixed supply of
@@ -410,17 +410,17 @@
           <div class="stat"><strong>4,032</strong><span>fixed total supply</span></div>
           <div class="stat"><strong>2</strong><span>qualifying <code>fc</code> difficulty periods</span></div>
           <div class="stat"><strong>2,016</strong><span>blocks per generation</span></div>
-          <div class="stat"><strong>0</strong><span>off-chain randomness</span></div>
         </div>
       </section>
 
       <section class="section" id="supply" aria-labelledby="supply-title">
         <div class="section-head">
           <h2 id="supply-title">Supply generation</h2>
-          <p>
-            Bitcoin adjusts mining difficulty every <strong>2,016 blocks</strong>. Froggies uses difficulty periods whose block header
-            <code>bits</code> value contains the <code>fc</code> signal.
-          </p>
+         <p>
+            Bitcoin updates its mining difficulty every <strong>2,016 blocks</strong>. Froggies looks for difficulty periods whose
+            <code>bits</code> value contains the special <code>fc</code> signal. This has happened only twice in Bitcoin's history:
+            in <strong>2013</strong> and <strong>2026</strong>.
+        </p>
         </div>
         <div class="generation-grid">
           <article class="card">
@@ -428,7 +428,7 @@
             <h3>Early pond</h3>
             <dl>
               <div class="row"><dt>Block range</dt><dd>266,112 – 268,127</dd></div>
-              <div class="row"><dt>First block date</dt><dd>2013-10-26 02:24:32 UTC</dd></div>
+              <div class="row"><dt>First block date</dt><dd>10-26-2013</dd></div>
               <div class="row"><dt><code>bits</code> value</dt><dd><code>190afc85</code></dd></div>
               <div class="row"><dt>Froggies</dt><dd>2,016</dd></div>
             </dl>
@@ -438,7 +438,7 @@
             <h3>Future pond</h3>
             <dl>
               <div class="row"><dt>Block range</dt><dd>933,408 – 935,423</dd></div>
-              <div class="row"><dt>First block date</dt><dd>2026-01-22 19:31:22 UTC</dd></div>
+              <div class="row"><dt>First block date</dt><dd>01-22-2026</dd></div>
               <div class="row"><dt><code>bits</code> value</dt><dd><code>1701fca1</code></dd></div>
               <div class="row"><dt>Froggies</dt><dd>2,016</dd></div>
             </dl>
